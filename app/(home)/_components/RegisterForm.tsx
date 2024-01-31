@@ -21,10 +21,12 @@ enum Roles {
 
 const RegisterForm = () => {
   const { data, status } = useSession()
+
   const router = useRouter()
+
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/users")
+      router.push("/dashboard")
     }
   }, [status, router])
 
@@ -36,19 +38,19 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      role: "",
+      role: Roles.Coach,
       email: "",
       password: "",
     },
   })
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    setIsLoading(true)
     try {
       await axios.post("/api/register", data)
       signIn("credentials", data)
       toast.success("Account created successfully")
     } catch (err: any) {
+      console.log(err)
       toast.error("Something went wrong")
     }
 
@@ -74,14 +76,18 @@ const RegisterForm = () => {
             <Label htmlFor="password" className="mb-2 block">
               Choose your role
             </Label>
-            <RadioGroup defaultValue="option-one" className="flex py-2">
+            <RadioGroup
+              defaultValue="option-one"
+              className="flex py-2"
+              {...register("role")}
+            >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option-one" id="option-one" />
-                <Label htmlFor="option-one">Coach</Label>
+                <RadioGroupItem value="coach" id="coach" />
+                <Label htmlFor="coach">Coach</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="option-two" id="option-two" />
-                <Label htmlFor="option-two">Student</Label>
+                <RadioGroupItem value="student" id="student" />
+                <Label htmlFor="student">Student</Label>
               </div>
             </RadioGroup>
           </div>
@@ -89,13 +95,26 @@ const RegisterForm = () => {
             <Label htmlFor="email" className="mb-2 block">
               Email
             </Label>
-            <Input type="text" id="email" />
+
+            <Input
+              type="text"
+              id="email"
+              register={register}
+              errors={errors}
+              disabled={isLoading}
+            />
           </div>
           <div>
             <Label htmlFor="password" className="mb-2 block">
               Password
             </Label>
-            <Input type="password" id="password" />
+            <Input
+              type="password"
+              id="password"
+              register={register}
+              disabled={isLoading}
+              errors={errors}
+            />
           </div>
 
           <div>

@@ -3,6 +3,8 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
 import NextAuth, { AuthOptions } from "next-auth"
+import { db } from "@/lib/firebase"
+import { collection, getDocs, query, where } from "firebase/firestore"
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -24,14 +26,19 @@ export const authOptions: AuthOptions = {
         if (!credentials?.email || !credentials?.password)
           throw new Error("Invalid credentials")
 
-        const user = {}
+        const q = query(
+          collection(db, "users"),
+          where("email", "==", credentials.email)
+        )
+        const querySnapshot = await getDocs(q)
 
-        if (!user || !user?.hashedPassword)
-          throw new Error("Invalid credentials")
+        const user = querySnapshot.docs[0].data()
+
+        if (!user || !user?.password) throw new Error("Invalid credentials")
 
         const isCorrectPassword = await bcrypt.compare(
           credentials.password,
-          user.hashedPassword as string
+          user.password as string
         )
 
         if (!isCorrectPassword) throw new Error("Invalid Password")
