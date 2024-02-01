@@ -1,18 +1,17 @@
 "use client"
-import { useEffect } from "react"
-import { useState } from "react"
-import { useForm, FieldValues, SubmitHandler, set } from "react-hook-form"
-import axios from "axios"
-import { toast } from "react-hot-toast"
+import { useEffect, useState } from "react"
 import { signIn, useSession } from "next-auth/react"
+import Link from "next/link"
+import { useForm, FieldValues, SubmitHandler, set } from "react-hook-form"
+import { toast } from "react-hot-toast"
 import { useRouter } from "next/navigation"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import Link from "next/link"
-import AuthSocialButton from "./AuthSocialButton"
+import AuthSocialButton from "./auth-social-button"
 import { BsGithub, BsGoogle } from "react-icons/bs"
+import BackButton from "./back-button"
 
 enum Roles {
   Coach = "coach",
@@ -20,11 +19,11 @@ enum Roles {
 }
 
 const LoginForm = () => {
-  const { data, status } = useSession()
+  const { status } = useSession()
   const router = useRouter()
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/users")
+      router.push("/dashboard")
     }
   }, [status, router])
 
@@ -44,12 +43,16 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
-    try {
-      await axios.post("/api/register", data)
-      signIn("credentials", data)
-      toast.success("Account created successfully")
-    } catch (err: any) {
-      toast.error("Something went wrong")
+
+    const callback = await signIn("credentials", {
+      ...data,
+      redirect: false,
+    })
+
+    if (callback?.error) toast.error(callback.error)
+    if (callback?.ok && !callback?.error) {
+      toast.success("Logged in")
+      router.push("/dashboard")
     }
 
     setIsLoading(false)
@@ -61,28 +64,48 @@ const LoginForm = () => {
     if (callback?.error) toast.error(callback.error)
     if (callback?.ok && !callback?.error) {
       toast.success("Logged in")
-      router.push("/users")
+      router.push("/dashboard")
     }
     setIsLoading(false)
   }
 
   return (
-    <div className="pt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="sm:mx-auto sm:w-full sm:max-w-md">
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+        <div className="mb-6">
+          <BackButton />
+          <h1 className="font-extrabold uppercase text-xl lg:text-4xl mb-1 mt-4">
+            Coachy
+          </h1>
+          <p className="text-muted-foreground">Sign in to your account</p>
+        </div>
+
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <Label htmlFor="email" className="mb-2 block">
               Email
             </Label>
-            <Input type="text" id="email" />
+
+            <Input
+              type="text"
+              id="email"
+              register={register}
+              errors={errors}
+              disabled={isLoading}
+            />
           </div>
           <div>
             <Label htmlFor="password" className="mb-2 block">
               Password
             </Label>
-            <Input type="password" id="password" />
+            <Input
+              type="password"
+              id="password"
+              register={register}
+              disabled={isLoading}
+              errors={errors}
+            />
           </div>
-
           <div>
             <Button disabled={isLoading} type="submit" className="w-full">
               Login
@@ -117,7 +140,7 @@ const LoginForm = () => {
 
         <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
           Don't have an account yet?
-          <Link href="/login">
+          <Link href="/signup">
             <span className="underline cursor-pointer">Create an account</span>
           </Link>
         </div>

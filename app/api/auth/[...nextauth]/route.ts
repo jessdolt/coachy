@@ -1,21 +1,19 @@
 import bcrypt from "bcrypt"
 import CredentialsProvider from "next-auth/providers/credentials"
-import GithubProvider from "next-auth/providers/github"
-import GoogleProvider from "next-auth/providers/google"
 import NextAuth, { AuthOptions } from "next-auth"
 import { db } from "@/lib/firebase"
 import { collection, getDocs, query, where } from "firebase/firestore"
 
 export const authOptions: AuthOptions = {
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
+    // GithubProvider({
+    //   clientId: process.env.GITHUB_ID as string,
+    //   clientSecret: process.env.GITHUB_SECRET as string,
+    // }),
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_CLIENT_ID as string,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    // }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -34,7 +32,7 @@ export const authOptions: AuthOptions = {
 
         const user = querySnapshot.docs[0].data()
 
-        if (!user || !user?.password) throw new Error("Invalid credentials")
+        if (!user?.password) throw new Error("Invalid credentials")
 
         const isCorrectPassword = await bcrypt.compare(
           credentials.password,
@@ -43,13 +41,31 @@ export const authOptions: AuthOptions = {
 
         if (!isCorrectPassword) throw new Error("Invalid Password")
 
-        return user
+        return {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+          profileUrl: user.profileUrl,
+        }
       },
     }),
   ],
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
+  },
+  callbacks: {
+    async session({ session, token }) {
+      session.user = token.user as any
+      return session
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user
+      }
+      return token
+    },
   },
   secret: process.env.NEXTAUTH_SECRET,
 }

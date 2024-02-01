@@ -19,6 +19,9 @@ export async function POST(request: Request) {
       email: email,
       role: role,
       password: hashedPassword,
+      firstName: "",
+      lastName: "",
+      profileUrl: "",
     })
 
     return NextResponse.json(

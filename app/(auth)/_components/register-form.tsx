@@ -1,18 +1,19 @@
 "use client"
-import { useEffect } from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm, FieldValues, SubmitHandler, set } from "react-hook-form"
 import axios from "axios"
 import { toast } from "react-hot-toast"
 import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import Link from "next/link"
-import AuthSocialButton from "./AuthSocialButton"
+import AuthSocialButton from "./auth-social-button"
 import { BsGithub, BsGoogle } from "react-icons/bs"
+import BackButton from "./back-button"
 
 enum Roles {
   Coach = "coach",
@@ -69,8 +70,16 @@ const RegisterForm = () => {
   }
 
   return (
-    <div className="pt-8  sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="pt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+        <div className="mb-6">
+          <BackButton />
+          <h1 className="font-extrabold uppercase text-xl lg:text-4xl mb-1 mt-4">
+            Coachy
+          </h1>
+          <p className="text-muted-foreground">Sign up to your account</p>
+        </div>
+
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <Label htmlFor="password" className="mb-2 block">
