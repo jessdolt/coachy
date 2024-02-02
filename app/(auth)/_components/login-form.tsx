@@ -13,11 +13,6 @@ import AuthSocialButton from "./auth-social-button"
 import { BsGithub, BsGoogle } from "react-icons/bs"
 import BackButton from "./back-button"
 
-enum Roles {
-  Coach = "coach",
-  Student = "student",
-}
-
 const LoginForm = () => {
   const { status } = useSession()
   const router = useRouter()
@@ -35,7 +30,6 @@ const LoginForm = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      role: "",
       email: "",
       password: "",
     },
@@ -139,7 +133,7 @@ const LoginForm = () => {
         </div>
 
         <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
-          Don't have an account yet?
+          Don&apos;t have an account yet?
           <Link href="/signup">
             <span className="underline cursor-pointer">Create an account</span>
           </Link>

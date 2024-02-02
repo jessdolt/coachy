@@ -14,8 +14,7 @@ export async function POST(request: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    await addDoc(collection(db, "users"), {
-      id: uuidv4(),
+    await setDoc(doc(db, "users", uuidv4()), {
       email: email,
       role: role,
       password: hashedPassword,

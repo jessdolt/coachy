@@ -24,9 +24,9 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
     <>
       <SidebarDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} />
 
-      <div>
-        <header className="bg-white lg:bg-transparent">
-          <div className="py-6 px-4 flex justify-between lg:justify-end items-center max-w-7xl mx-auto  ">
+      <div className="sticky">
+        <header className="bg-white lg:bg-transparent sticky">
+          <div className="py-6 px-4 flex justify-between lg:justify-end items-center max-w-7xl mx-auto">
             <Button
               className="lg:hidden"
               size="icon"

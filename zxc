@@ -1,0 +1,38 @@
+Pag set ng data ng availaibity / scheduler
+number to so pag 0 === sunday since eto ung nirereturn ng moment
+
+Sa Coach
+
+availabilitySchedule: {
+    0: [],
+    1: [
+        {
+            startTime: '8:00am',
+            endTime: '10:00am',
+        },
+        {
+            startTime: '10:00am',
+            endTime: '12:00pm',
+        },
+    ]
+    2: [],
+    3: [],
+    4: [],
+    5: [],
+    6: [],
+};
+
+// 
+
+Sa student pag click ng date
+1. kunin mo ung date then check mo kung anong araw via moment, so rereturn nito 0 / 1 / 2 / 3
+2. so pag 1 (monday)  ung result dyan, fetch mo mga available timeslots ni coach at mga existing na nabook na time slot
+
+checkAvailability endpoint
+params
+1. coach id
+2. availability day === para icheck available time slots nung coach
+2. availability date === para existing meetings para sa coach 
+
+availaibty/schedule
+meeting

@@ -15,3 +15,8 @@ export interface Route {
   icon: LucideIcon
   isActive: boolean
 }
+
+export interface TimeSlot {
+  startTime: string
+  endTime: string
+}

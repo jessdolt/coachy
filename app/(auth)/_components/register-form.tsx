@@ -4,7 +4,6 @@ import {
   useForm,
   FieldValues,
   SubmitHandler,
-  set,
   Controller,
 } from "react-hook-form"
 import axios from "axios"
@@ -38,7 +37,7 @@ const RegisterForm = () => {
   }, [status, router])
 
   const [isLoading, setIsLoading] = useState(false)
-  const roles: Roles[] = [Roles.Coach, Roles.Student]
+  const roles = [Roles.Coach, Roles.Student]
 
   const {
     register,
@@ -54,8 +53,6 @@ const RegisterForm = () => {
   })
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data)
-    return
     setIsLoading(true)
 
     try {
