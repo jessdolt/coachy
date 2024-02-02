@@ -32,6 +32,8 @@ export const authOptions: AuthOptions = {
 
         const user = querySnapshot.docs[0].data()
 
+        const user_id = querySnapshot.docs[0].id
+
         if (!user?.password) throw new Error("Invalid credentials")
 
         const isCorrectPassword = await bcrypt.compare(
@@ -42,6 +44,7 @@ export const authOptions: AuthOptions = {
         if (!isCorrectPassword) throw new Error("Invalid Password")
 
         return {
+          id: user_id,
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
@@ -60,10 +63,17 @@ export const authOptions: AuthOptions = {
       session.user = token.user as any
       return session
     },
-    async jwt({ token, user }) {
+    async jwt({ token, trigger, user, session }) {
       if (user) {
         token.user = user
       }
+
+      if (trigger === "update") {
+        if (session?.user?.id) {
+          token.user = session.user
+        }
+      }
+
       return token
     },
   },

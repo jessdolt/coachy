@@ -21,6 +21,7 @@ interface SetupFormProps {
 
 const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
   const router = useRouter()
+  const { data, update } = useSession()
   const [isLoading, setIsLoading] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
 
@@ -42,46 +43,25 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
     },
   })
 
-  //   const updateDocument = async () => {
-  //     const collectionRef = firestore.collection('your_collection');
-  //     const fieldName = 'exampleField';
-  //     const desiredValue = 'desiredValue';
-
-  //     try {
-  //       const querySnapshot = await collectionRef.where(fieldName, '==', desiredValue).get();
-
-  //       if (!querySnapshot.empty) {
-  //         const doc = querySnapshot.docs[0];
-  //         const updatedData = { updateField: 'newUpdatedValue' };
-
-  //         await doc.ref.update(updatedData);
-  //         setResultMessage('Document updated successfully.');
-  //       } else {
-  //         setResultMessage('No matching documents found.');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error updating document:', error);
-  //       setResultMessage('Error updating document. Please check the console for details.');
-  //     }
-  //   };
-
-  //   const washingtonRef = doc(db, "cities", "DC");
-
-  // // Set the "capital" field of the city 'DC'
-  // await updateDoc(washingtonRef, {
-  //   capital: true
-  // });
-
   const profileUrl = watch("profileUrl")
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
 
     try {
-      await updateDoc(doc(db, "users"), {
+      await updateDoc(doc(db, "users", currentUser.id), {
         profileUrl: data.profileUrl,
         firstName: data.firstName,
         lastName: data.lastName,
+      })
+
+      update({
+        user: {
+          ...currentUser,
+          profileUrl: data.profileUrl,
+          firstName: data.firstName,
+          lastName: data.lastName,
+        },
       })
 
       router.push("/dashboard")

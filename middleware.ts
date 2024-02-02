@@ -3,13 +3,13 @@ import { NextResponse } from "next/server"
 import { redirect } from "next/navigation"
 export default withAuth(
   async function middleware(req) {
-    const user = req.nextauth.token as any
+    const user = req.nextauth.token?.user as any
     const url = req.nextUrl.clone()
 
-    // if (!user.firstName && !user.lastName && !user.profileUrl) {
-    //   url.pathname = "/setup"
-    //   return NextResponse.redirect(url)
-    // }
+    if (!user.firstName && !user.lastName && !user.profileUrl) {
+      url.pathname = "/setup"
+      return NextResponse.redirect(url)
+    }
 
     // Check if the user is logged in and it's their first login
     // if (user && user?.user?.firstLogin) {

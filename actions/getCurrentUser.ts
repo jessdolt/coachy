@@ -17,10 +17,12 @@ const getCurrentUser = async (): Promise<User | null> => {
 
     const user = querySnapshot.docs[0].data()
 
+    const user_id = querySnapshot.docs[0].id
+
     if (!user) return null
 
     return {
-      id: user.id,
+      id: user_id,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,

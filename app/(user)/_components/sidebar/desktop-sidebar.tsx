@@ -1,58 +1,36 @@
 "use client"
 
 import UseRoutes from "@/hooks/useRoutes"
-import Link from "next/link"
 
 import Logo from "@/app/_components/navbar/logo"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { signOut } from "next-auth/react"
+import SidebarItem from "./sidebar-item"
+import { BiLogOut } from "react-icons/bi"
 
 const DesktopSidebar = () => {
   const routes = UseRoutes()
 
   return (
-    <div className="w-60 bg-white h-full fixed border-r border-r-gray-300 px-6">
+    <div className="hidden lg:block w-60 bg-white h-full fixed border-r border-r-gray-300 px-6">
       <nav className="py-4 flex flex-col h-full">
         <div className="p-3">
           <Logo />
         </div>
 
         <ul className="space-y-2 mt-6">
-          {routes.map(({ icon: Icon, ...route }) => (
-            <li>
-              <Link
-                href={route.path}
-                className={cn(
-                  `
-                    group
-                    flex
-                    gap-x-3
-                    rounded-md
-                    p-3
-                    text-sm
-                    leading-6
-                    font-semibold
-                    text-gray-600
-                    hover:text-black
-                    hover:bg-gray-100
-                    `,
-                  route.isActive && "bg-gray-100 !text-black"
-                )}
-              >
-                <Icon />
-                <span>{route.name}</span>
-              </Link>
-            </li>
+          {routes.map((route) => (
+            <SidebarItem {...route} key={route.path} />
           ))}
         </ul>
 
         <div className="mt-auto">
           <Button
-            className="w-full"
+            className="flex items-center gap-2 w-full"
             onClick={() => signOut({ callbackUrl: "/" })}
           >
-            Sign Out
+            <BiLogOut size={24} />
+            Logout
           </Button>
         </div>
       </nav>

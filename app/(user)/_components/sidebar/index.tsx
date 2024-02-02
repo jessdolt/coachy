@@ -1,6 +1,6 @@
 import getCurrentUser from "@/actions/getCurrentUser"
-import Navbar from "../navbar"
 import DesktopSidebar from "./desktop-sidebar"
+import Navbar from "../navbar"
 
 interface SidebarProps {
   children: React.ReactNode
@@ -13,7 +13,7 @@ const Sidebar: React.FC<SidebarProps> = async ({ children }) => {
     <div className="min-h-screen relative flex flex-col">
       <DesktopSidebar />
 
-      <div className="ml-60 flex-1 flex flex-col">
+      <div className="ml-none lg:ml-60 flex-1 flex flex-col">
         <Navbar currentUser={currentUser!} />
         <div className="flex-1">{children}</div>
       </div>

@@ -1,6 +1,12 @@
 "use client"
 import { useEffect, useState } from "react"
-import { useForm, FieldValues, SubmitHandler, set } from "react-hook-form"
+import {
+  useForm,
+  FieldValues,
+  SubmitHandler,
+  set,
+  Controller,
+} from "react-hook-form"
 import axios from "axios"
 import { toast } from "react-hot-toast"
 import { signIn, useSession } from "next-auth/react"
@@ -21,7 +27,7 @@ enum Roles {
 }
 
 const RegisterForm = () => {
-  const { data, status } = useSession()
+  const { status } = useSession()
 
   const router = useRouter()
 
@@ -32,20 +38,26 @@ const RegisterForm = () => {
   }, [status, router])
 
   const [isLoading, setIsLoading] = useState(false)
+  const roles: Roles[] = [Roles.Coach, Roles.Student]
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      role: Roles.Coach,
+      role: roles[0],
       email: "",
       password: "",
     },
   })
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    console.log(data)
+    return
+    setIsLoading(true)
+
     try {
       await axios.post("/api/register", data)
       signIn("credentials", data)
@@ -53,9 +65,9 @@ const RegisterForm = () => {
     } catch (err: any) {
       console.log(err)
       toast.error("Something went wrong")
+    } finally {
+      setIsLoading(false)
     }
-
-    setIsLoading(false)
   }
 
   const socialAction = async (action: string) => {
@@ -85,7 +97,27 @@ const RegisterForm = () => {
             <Label htmlFor="password" className="mb-2 block">
               Choose your role
             </Label>
-            <RadioGroup
+
+            <Controller
+              name="role"
+              control={control}
+              render={(props) => (
+                <RadioGroup
+                  defaultValue="Coach"
+                  className="flex py-2"
+                  {...props}
+                >
+                  {roles.map((role) => (
+                    <div className="flex items-center space-x-2" key={role}>
+                      <RadioGroupItem value={role} id={role} />
+                      <Label htmlFor={role}>{role}</Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
+            />
+
+            {/* <RadioGroup
               defaultValue="option-one"
               className="flex py-2"
               {...register("role")}
@@ -98,7 +130,7 @@ const RegisterForm = () => {
                 <RadioGroupItem value="student" id="student" />
                 <Label htmlFor="student">Student</Label>
               </div>
-            </RadioGroup>
+            </RadioGroup> */}
           </div>
           <div>
             <Label htmlFor="email" className="mb-2 block">
