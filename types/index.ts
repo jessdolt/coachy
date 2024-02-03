@@ -5,6 +5,7 @@ export interface User {
   email: string
   firstName: string
   lastName: string
+  fullName: string
   phoneNumber: string
   role: string
   profileUrl: string
@@ -25,4 +26,19 @@ export interface TimeSlot {
 export enum Roles {
   Coach = "Coach",
   Student = "Student",
+}
+
+export interface Availability {
+  timezone: string
+  user_id: string
+  days: {
+    0: TimeSlot[]
+    1: TimeSlot[]
+    2: TimeSlot[]
+    3: TimeSlot[]
+    4: TimeSlot[]
+    5: TimeSlot[]
+    6: TimeSlot[]
+  }
+  acceptingBooking: boolean
 }

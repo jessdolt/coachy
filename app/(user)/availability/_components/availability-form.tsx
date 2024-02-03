@@ -11,7 +11,7 @@ import { defaultDays } from "../constants"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 
 import { db } from "@/lib/firebase"
-import { FS_AVAILABILITY } from "@/lib/collections"
+import { COLLECTION_AVAILABILITY } from "@/lib/collections"
 import toast from "react-hot-toast"
 import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -51,23 +51,22 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
     formState: { errors, isLoading },
   } = useForm<FormValues>({
     defaultValues: async () => {
-      const docRef = doc(db, FS_AVAILABILITY, currentUser.id)
+      const docRef = doc(db, COLLECTION_AVAILABILITY, currentUser.id)
       const docSnap = await getDoc(docRef)
       const data = docSnap.data()
 
       if (!data) return defaultValues
 
-      const map = defaultDays.map((day, index) => {
-        return {
-          ...day,
-          isChecked: data.days[index].length > 0,
-          hours: data.days[index] || [],
-        }
-      })
+      const a = Object.entries(data.days)
+      const b = a.map((day: any) => day[1])
+      const c = b.map((day: any) => ({
+        isChecked: day.length > 0,
+        hours: day,
+      }))
 
       return {
         ...data,
-        days: map,
+        days: c,
       }
     },
   })
@@ -79,7 +78,7 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
     const daysData = new Map(newData.map((day, index) => [index, day]))
 
     try {
-      await updateDoc(doc(db, FS_AVAILABILITY, currentUser.id), {
+      await updateDoc(doc(db, COLLECTION_AVAILABILITY, currentUser.id), {
         days: Object.fromEntries(daysData),
         timezone: data.timezone,
       })
@@ -101,7 +100,7 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
   const acceptingBooking = watch("acceptingBooking")
   const handleAcceptingBooking = async (value: boolean) => {
     try {
-      await updateDoc(doc(db, FS_AVAILABILITY, currentUser.id), {
+      await updateDoc(doc(db, COLLECTION_AVAILABILITY, currentUser.id), {
         acceptingBooking: value,
       })
 

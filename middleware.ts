@@ -7,17 +7,13 @@ export default withAuth(
     const user = request.nextauth.token as any
     const url = request.nextUrl.clone()
 
-    console.log(user)
-
     if (
       request.nextUrl.pathname.startsWith("/availability") &&
       user.role !== Roles.Coach
     ) {
-      url.pathname = "/unauthorized"
-      return NextResponse.redirect(url)
+      // url.pathname = "/unauthorized"
+      // return NextResponse.redirect(url)
     }
-
-    console.log("here")
   },
   {
     callbacks: {

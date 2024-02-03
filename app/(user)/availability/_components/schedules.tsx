@@ -12,11 +12,10 @@ interface SchedulesProps {
 }
 
 const Schedules: React.FC<SchedulesProps> = ({ register, control }) => {
-  const { fields, append, prepend, remove, swap, move, insert, update } =
-    useFieldArray({
-      control,
-      name: "days",
-    })
+  const { fields, update } = useFieldArray({
+    control,
+    name: "days",
+  })
 
   const handleSwitchChange = (index: number, day: any) => {
     const newFields = {

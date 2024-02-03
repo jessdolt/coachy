@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { COLLECTION_USERS } from "@/lib/collections"
 
 interface SetupFormProps {
   currentUser: User
@@ -50,7 +51,7 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
     setIsLoading(true)
 
     try {
-      await updateDoc(doc(db, "users", currentUser.id), {
+      await updateDoc(doc(db, COLLECTION_USERS, currentUser.id), {
         profileUrl: data.profileUrl,
         firstName: data.firstName,
         lastName: data.lastName,

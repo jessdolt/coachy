@@ -9,8 +9,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Card } from "@/components/ui/card"
-import { UseFormRegister } from "react-hook-form"
-import { FormValues } from "./availability-form"
 
 interface TimezonePickerProps {
   value: string

@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import moment from "moment"
-import { TimeSlot } from "@/types"
+import { Availability, TimeSlot } from "@/types"
 import { TIME_FORMAT } from "./constants"
 
 export function cn(...inputs: ClassValue[]) {
@@ -46,15 +46,75 @@ export function getTimeOverlap(
   return data.find((item) => isTimeWithinRange(time, item))
 }
 
-// const currentData: Foo[] = [
-//     { startTime: "9:00 AM", endTime: "11:00 AM" },
-//     { startTime: "11:00 AM", endTime: "1:00 PM" },
-// ];
+export function getDatesForDaysInMonth(dayIndices: any[], inputDate?: Date) {
+  // Get the current date
+  const currentDate = inputDate ? moment(inputDate) : moment()
 
-// // should return { startTime: "11:00 AM", endTime: "1:00 PM" }
-// console.log("11:01 am");
-// console.log(getTimeOverlap(currentData, '11:01 am'));
+  // Get the current month
+  const currentMonth = currentDate.month()
 
-// // should return undefined since there are no overlap
-// console.log("1:31pm");
-// console.log(getTimeOverlap(currentData, '1:31 pm'));
+  // Create an array to store the dates
+  const dates = []
+
+  // Loop through each day index in the array
+  for (const dayIndex of dayIndices) {
+    // Use Moment.js to get the first occurrence of the specified day in the current month
+    let dateObject = moment()
+      .month(currentMonth)
+      .date(1)
+      .day(dayIndex + 7)
+
+    // Continue adding dates while still in the current month
+
+    while (dateObject.month() === currentMonth) {
+      dates.push(dateObject.toDate())
+
+      // Move to the next occurrence of the specified day in the current month
+      dateObject = dateObject.add(7, "days")
+    }
+  }
+
+  // Return the array of dates
+  return dates
+}
+
+export const parseMapDaysToArray = (map: Availability) => {
+  return Object.entries(map.days).map((day) => day[1])
+}
+
+export function combineDateAndTime(dateObject: Date, timeString: string) {
+  if (!(dateObject instanceof Date) || isNaN(dateObject.getTime())) {
+    throw new Error("Invalid Date object")
+  }
+
+  const timeFormat = /^\d{1,2}:\d{2} [APMapm]{2}$/
+  if (!timeFormat.test(timeString)) {
+    throw new Error("Invalid time string format")
+  }
+
+  const formattedDate = moment(dateObject).format("YYYY-MM-DD")
+
+  const combinedMoment = moment(
+    `${formattedDate} ${timeString}`,
+    "YYYY-MM-DD h:mm A"
+  )
+
+  const isoString = combinedMoment.toISOString()
+
+  return isoString
+}
+
+export function convertISOToTimeString(isoString: string) {
+  // Ensure isoString is a valid ISO 8601 format
+  if (!moment(isoString, moment.ISO_8601, true).isValid()) {
+    throw new Error("Invalid ISO 8601 datetime string")
+  }
+
+  // Convert ISO datetime string to moment object
+  const momentObject = moment(isoString)
+
+  // Format the moment object to display only the time part
+  const timeString = momentObject.format("h:mm A")
+
+  return timeString
+}

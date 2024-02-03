@@ -4,6 +4,8 @@ import { AuthOptions } from "next-auth"
 import { db } from "@/lib/firebase"
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { revalidatePath } from "next/cache"
+import { COLLECTION_USERS } from "./collections"
+import { Roles } from "@/types"
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -18,7 +20,7 @@ export const authOptions: AuthOptions = {
           throw new Error("Invalid credentials")
 
         const q = query(
-          collection(db, "users"),
+          collection(db, COLLECTION_USERS),
           where("email", "==", credentials.email)
         )
         const querySnapshot = await getDocs(q)
@@ -64,7 +66,7 @@ export const authOptions: AuthOptions = {
     },
     async jwt({ token, trigger, user, session }) {
       if (user) {
-        token.role = user.role
+        token.role = user.role as Roles
         token.id = user.id
         token.profileUrl = user.profileUrl
       }
