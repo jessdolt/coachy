@@ -40,6 +40,7 @@ export const authOptions: AuthOptions = {
           email: user.email,
           firstName: user.firstName,
           lastName: user.lastName,
+          name: user.firstName + user.lastName,
           role: user.role,
           profileUrl: user.profileUrl,
         }
@@ -52,19 +53,25 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async session({ session, token }) {
-      session.user = token.user as any
+      if (session?.user) {
+        session.user.role = token.role
+        session.user.id = token.id as string
+        session.user.profileUrl = token.profileUrl as string
+      }
       return session
     },
     async jwt({ token, trigger, user, session }) {
       if (user) {
-        token.user = user
+        token.role = user.role
+        token.id = user.id
+        token.profileUrl = user.profileUrl
       }
 
-      if (trigger === "update") {
-        if (session?.user?.id) {
-          token.user = session.user
-        }
-      }
+      // if (trigger === "update") {
+      //   if (session?.user?.id) {
+      //     token.user = session.user
+      //   }
+      // }
 
       return token
     },

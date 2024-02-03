@@ -4,6 +4,7 @@ import { db } from "@/lib/firebase"
 import { addDoc, collection, doc, setDoc } from "firebase/firestore"
 import { v4 as uuidv4 } from "uuid"
 import { DEFAULT_DAYS } from "@/lib/constants"
+import moment from "moment-timezone"
 
 export async function POST(request: Request) {
   try {
@@ -12,8 +13,6 @@ export async function POST(request: Request) {
 
     if (!email || !role || !password)
       return new NextResponse("Missing info", { status: 400 })
-
-    console.log(role)
 
     const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -29,9 +28,9 @@ export async function POST(request: Request) {
     })
 
     if (role === "coach") {
-      await addDoc(collection(db, "availability"), {
+      await setDoc(doc(db, "availability", user_id), {
         days: DEFAULT_DAYS,
-        timezone: "America/New_York",
+        timezone: moment.tz.guess(),
         user_id,
         acceptingBooking: false,
       })

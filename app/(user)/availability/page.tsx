@@ -1,7 +1,10 @@
 import AvailabilityForm from "./_components/availability-form"
 import AcceptingBooking from "./_components/accepting-booking"
+import getCurrentUser from "@/actions/getCurrentUser"
 
-const AvailabilityPage = () => {
+const AvailabilityPage = async () => {
+  const currentUser = await getCurrentUser()
+
   return (
     <div className="max-w-7xl mx-auto px-2 lg:px-4">
       <div className="flex justify-between items-center">
@@ -10,12 +13,10 @@ const AvailabilityPage = () => {
           <p className="text-sm lg:text-base text-muted-foreground">
             Configure times when you are available for bookings.
           </p>
-
-          <AcceptingBooking />
         </div>
       </div>
 
-      <AvailabilityForm />
+      <AvailabilityForm currentUser={currentUser!} />
     </div>
   )
 }
