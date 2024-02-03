@@ -37,9 +37,9 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      profileUrl: currentUser.profileUrl,
-      firstName: currentUser.firstName,
-      lastName: currentUser.lastName,
+      profileUrl: currentUser?.profileUrl,
+      firstName: currentUser?.firstName,
+      lastName: currentUser?.lastName,
     },
   })
 

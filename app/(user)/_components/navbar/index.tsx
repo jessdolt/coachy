@@ -17,6 +17,8 @@ const toInitials = (name: string) => {
 const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
   const [isOpen, setIsOpen] = useState(false)
 
+  if (!currentUser) return null
+
   const initials = `${toInitials(currentUser.firstName)}${toInitials(
     currentUser.lastName
   )}`
