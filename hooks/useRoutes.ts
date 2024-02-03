@@ -38,9 +38,9 @@ const useRoutes = () => {
     },
     {
       name: "Bookings",
-      path: "/bookings",
+      path: "/bookings/upcoming",
       icon: Book,
-      isActive: pathname === "/bookings",
+      isActive: pathname.startsWith("/bookings"),
       roles: [Roles.Coach, Roles.Student],
     },
   ]

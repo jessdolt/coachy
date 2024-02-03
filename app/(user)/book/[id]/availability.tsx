@@ -6,6 +6,7 @@ import {
   cn,
   combineDateAndTime,
   convertISOToTimeString,
+  convertUnixTimestampToISOString,
   getDatesForDaysInMonth,
   parseMapDaysToArray,
 } from "@/lib/utils"
@@ -17,6 +18,7 @@ import BookingForm from "./booking-form"
 import toast from "react-hot-toast"
 import { collection, getDoc, getDocs, query, where } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import { toDate } from "date-fns"
 interface AvailabilityProps {
   data: Availability
 }
@@ -44,23 +46,27 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
 
   useEffect(() => {
     const fetchAvailableTime = async () => {
+      if (!selectedDate) return
+
       setIsLoading(true)
       const day = moment(selectedDate).day()
-      const currentDate = moment(selectedDate).format("YYYY-MM-DD")
 
       try {
         const q = query(
           collection(db, "meeting"),
-          where("date", "==", currentDate),
+          where("date", ">=", toDate(selectedDate)),
           where("coach_id", "==", data.user_id)
         )
 
         const querySnapshot = await getDocs(q)
         const result = querySnapshot.docs.map((doc) => doc.data())
-        const time = result.map((r) => convertISOToTimeString(r.startTime))
+
+        const time = result
+          .map((u) => convertUnixTimestampToISOString(u.startTime.seconds))
+          .map((r) => convertISOToTimeString(r))
 
         const availableTime = workingSched[day].filter((schedule) => {
-          return time.find((x) => x != schedule.startTime)
+          return !time.includes(schedule.startTime)
         })
 
         setTimes(availableTime.length === 0 ? workingSched[day] : availableTime)

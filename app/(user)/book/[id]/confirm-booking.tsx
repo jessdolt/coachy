@@ -39,13 +39,13 @@ const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
         user_id: data?.user.id,
         startTime: combineDateAndTime(date, time.startTime),
         endTime: combineDateAndTime(date, time.endTime),
-        date: moment(date).format("YYYY-MM-DD"),
+        date,
         review: "",
         status: "pending",
       })
 
       toast.success("Booking confirmed")
-      router.push("/bookings")
+      router.push("/bookings/upcoming")
     } catch (e) {
       console.log(e)
       toast.error("Something went wrong")

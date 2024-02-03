@@ -42,3 +42,15 @@ export interface Availability {
   }
   acceptingBooking: boolean
 }
+
+export interface Meeting {
+  id: string
+  coach_id: string
+  user_id: string
+  startTime: string
+  endTime: string
+  date: string
+  status: string
+  timezone: string
+  otherUser?: User
+}

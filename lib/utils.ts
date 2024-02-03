@@ -101,6 +101,11 @@ export function combineDateAndTime(dateObject: Date, timeString: string) {
 
   const isoString = combinedMoment.toISOString()
 
+  return new Date(isoString)
+}
+
+export function convertUnixTimestampToISOString(unixTimestamp: any) {
+  const isoString = moment.unix(unixTimestamp).toISOString()
   return isoString
 }
 
@@ -117,4 +122,19 @@ export function convertISOToTimeString(isoString: string) {
   const timeString = momentObject.format("h:mm A")
 
   return timeString
+}
+
+export function filterUniqueUsers(dataArray: any[], property: string) {
+  const uniqueUserIds = new Set()
+
+  return dataArray.filter((obj) => {
+    // Check if the user_id is already in the Set
+    if (!uniqueUserIds.has(obj[property])) {
+      // If not, add it to the Set and include the object in the result
+      uniqueUserIds.add(obj[property])
+      return true
+    }
+    // If user_id is already in the Set, exclude the object from the result
+    return false
+  })
 }
