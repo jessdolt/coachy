@@ -7,11 +7,14 @@ export default withAuth(
     const user = request.nextauth.token as any
     const url = request.nextUrl.clone()
 
+    console.log(user)
+
     if (
       request.nextUrl.pathname.startsWith("/availability") &&
       user.role !== Roles.Coach
     ) {
-      return NextResponse.rewrite(new URL("/dashboard", request.url))
+      url.pathname = "/unauthorized"
+      return NextResponse.redirect(url)
     }
 
     console.log("here")

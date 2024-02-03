@@ -28,6 +28,7 @@ const getCurrentUser = async (): Promise<User | null> => {
       lastName: user.lastName,
       role: user.role,
       profileUrl: user.profileUrl,
+      phoneNumber: user.phoneNumber,
     }
   } catch (e: any) {
     return null

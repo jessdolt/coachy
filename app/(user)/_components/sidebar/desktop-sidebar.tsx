@@ -1,6 +1,6 @@
 "use client"
 
-import UseRoutes from "@/hooks/useRoutes"
+import useRoutes from "@/hooks/useRoutes"
 
 import Logo from "@/app/_components/navbar/logo"
 import { Button } from "@/components/ui/button"
@@ -9,7 +9,7 @@ import SidebarItem from "./sidebar-item"
 import { BiLogOut } from "react-icons/bi"
 
 const DesktopSidebar = () => {
-  const routes = UseRoutes()
+  const routes = useRoutes()
 
   return (
     <div className="hidden lg:block w-60 bg-white h-full fixed border-r border-r-gray-300 px-6">

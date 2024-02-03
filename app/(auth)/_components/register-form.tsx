@@ -30,7 +30,7 @@ const RegisterForm = () => {
     if (status === "authenticated") {
       router.push("/dashboard")
     }
-  }, [status, router])
+  }, [])
 
   const [isLoading, setIsLoading] = useState(false)
   const roles = [Roles.Coach, Roles.Student]
@@ -56,8 +56,12 @@ const RegisterForm = () => {
 
     try {
       await axios.post("/api/register", data)
-      signIn("credentials", data)
-      toast.success("Account created successfully")
+      const callback = await signIn("credentials", { ...data, redirect: false })
+      if (callback?.error) toast.error(callback.error)
+      if (callback?.ok && !callback?.error) {
+        toast.success("Account created successfully")
+        router.push("/setup")
+      }
     } catch (err: any) {
       console.log(err)
       toast.error("Something went wrong")
@@ -72,7 +76,7 @@ const RegisterForm = () => {
     if (callback?.error) toast.error(callback.error)
     if (callback?.ok && !callback?.error) {
       toast.success("Logged in")
-      router.push("/users")
+      router.push("/setup")
     }
     setIsLoading(false)
   }
