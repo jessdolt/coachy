@@ -12,6 +12,16 @@ import {
 import { TimeSlot } from "@/types"
 import { Button } from "@/components/ui/button"
 import { defaultDays } from "../constants"
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore"
+import { useSession } from "next-auth/react"
+import { db } from "@/lib/firebase"
 
 export type FormValues = FieldValues & {
   days: {
@@ -37,7 +47,30 @@ const AvailabilityForm = () => {
     defaultValues,
   })
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {}
+  const session = useSession()
+
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const { days } = data
+    const newData = days.map((day) => day.hours)
+
+    const daysData = new Map(newData.map((day, index) => [index, day]))
+
+    try {
+      const q = query(
+        collection(db, "availability"),
+        where("user_id", "==", session.data.user.id)
+      )
+
+      const querySnapshot = await getDocs(q)
+      const docRef = querySnapshot.docs[0].ref.id
+
+      await updateDoc(doc(db, "availability", docRef), {
+        days: Object.fromEntries(daysData),
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

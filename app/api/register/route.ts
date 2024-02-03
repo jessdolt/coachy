@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 import { db } from "@/lib/firebase"
 import { addDoc, collection, doc, setDoc } from "firebase/firestore"
 import { v4 as uuidv4 } from "uuid"
+import { DEFAULT_DAYS } from "@/lib/constants"
 
 export async function POST(request: Request) {
   try {
@@ -12,9 +13,13 @@ export async function POST(request: Request) {
     if (!email || !role || !password)
       return new NextResponse("Missing info", { status: 400 })
 
+    console.log(role)
+
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    await setDoc(doc(db, "users", uuidv4()), {
+    const user_id = uuidv4()
+
+    await setDoc(doc(db, "users", user_id), {
       email: email,
       role: role,
       password: hashedPassword,
@@ -22,6 +27,15 @@ export async function POST(request: Request) {
       lastName: "",
       profileUrl: "",
     })
+
+    if (role === "coach") {
+      await addDoc(collection(db, "availability"), {
+        days: DEFAULT_DAYS,
+        timezone: "America/New_York",
+        user_id,
+        acceptingBooking: false,
+      })
+    }
 
     return NextResponse.json(
       {

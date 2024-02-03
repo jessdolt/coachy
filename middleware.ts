@@ -6,10 +6,10 @@ export default withAuth(
     const user = req.nextauth.token?.user as any
     const url = req.nextUrl.clone()
 
-    if (!user.firstName && !user.lastName && !user.profileUrl) {
-      url.pathname = "/setup"
-      return NextResponse.redirect(url)
-    }
+    // if (!user.firstName && !user.lastName && !user.profileUrl) {
+    //   url.pathname = "/setup"
+    //   return NextResponse.redirect(url)
+    // }
 
     // Check if the user is logged in and it's their first login
     // if (user && user?.user?.firstLogin) {
