@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import { AuthOptions } from "next-auth"
 import { db } from "@/lib/firebase"
 import { collection, getDocs, query, where } from "firebase/firestore"
+import { revalidatePath } from "next/cache"
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -58,6 +59,7 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id as string
         session.user.profileUrl = token.profileUrl as string
       }
+
       return session
     },
     async jwt({ token, trigger, user, session }) {
@@ -67,11 +69,12 @@ export const authOptions: AuthOptions = {
         token.profileUrl = user.profileUrl
       }
 
-      // if (trigger === "update") {
-      //   if (session?.user?.id) {
-      //     token.user = session.user
-      //   }
-      // }
+      if (trigger === "update") {
+        if (session?.user?.id) {
+          token.name = session.user.fullName
+          token.profileUrl = session.user.profileUrl
+        }
+      }
 
       return token
     },

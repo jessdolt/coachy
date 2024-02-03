@@ -5,6 +5,7 @@ export interface User {
   email: string
   firstName: string
   lastName: string
+  phoneNumber: string
   role: string
   profileUrl: string
 }
@@ -19,4 +20,9 @@ export interface Route {
 export interface TimeSlot {
   startTime: string
   endTime: string
+}
+
+export enum Roles {
+  Coach = "Coach",
+  Student = "Student",
 }

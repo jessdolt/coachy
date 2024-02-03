@@ -19,11 +19,7 @@ import { Label } from "@/components/ui/label"
 import AuthSocialButton from "./auth-social-button"
 import { BsGithub, BsGoogle } from "react-icons/bs"
 import BackButton from "./back-button"
-
-enum Roles {
-  Coach = "coach",
-  Student = "student",
-}
+import { Roles } from "@/types"
 
 const RegisterForm = () => {
   const { status } = useSession()
@@ -42,7 +38,8 @@ const RegisterForm = () => {
   const {
     register,
     handleSubmit,
-    control,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -51,6 +48,8 @@ const RegisterForm = () => {
       password: "",
     },
   })
+
+  const roleValue = watch("role")
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
@@ -95,39 +94,20 @@ const RegisterForm = () => {
               Choose your role
             </Label>
 
-            <Controller
-              name="role"
-              control={control}
-              render={(props) => (
-                <RadioGroup
-                  defaultValue="Coach"
-                  className="flex py-2"
-                  {...props}
-                >
-                  {roles.map((role) => (
-                    <div className="flex items-center space-x-2" key={role}>
-                      <RadioGroupItem value={role} id={role} />
-                      <Label htmlFor={role}>{role}</Label>
-                    </div>
-                  ))}
-                </RadioGroup>
-              )}
-            />
-
-            {/* <RadioGroup
-              defaultValue="option-one"
+            <RadioGroup
+              defaultValue={roleValue}
               className="flex py-2"
-              {...register("role")}
+              onValueChange={(value) => {
+                setValue("role", value)
+              }}
             >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="coach" id="coach" />
-                <Label htmlFor="coach">Coach</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="student" id="student" />
-                <Label htmlFor="student">Student</Label>
-              </div>
-            </RadioGroup> */}
+              {roles.map((role) => (
+                <div className="flex items-center space-x-2" key={role}>
+                  <RadioGroupItem value={role} id={role} />
+                  <Label htmlFor={role}>{role}</Label>
+                </div>
+              ))}
+            </RadioGroup>
           </div>
           <div>
             <Label htmlFor="email" className="mb-2 block">

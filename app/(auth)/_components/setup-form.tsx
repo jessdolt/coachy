@@ -1,14 +1,14 @@
 "use client"
 import { useEffect, useState } from "react"
-import { useForm, FieldValues, SubmitHandler, set } from "react-hook-form"
-import axios from "axios"
+import { useForm, FieldValues, SubmitHandler } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import { signIn, useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { CldUploadButton } from "next-cloudinary"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { User } from "@/types"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,10 +21,10 @@ interface SetupFormProps {
 
 const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
   const router = useRouter()
-  const { data, update } = useSession()
   const [isLoading, setIsLoading] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
 
+  // to resolve hydraion issue
   useEffect(() => {
     setIsMounted(true)
   }, [])
@@ -37,9 +37,10 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      profileUrl: currentUser?.profileUrl,
-      firstName: currentUser?.firstName,
-      lastName: currentUser?.lastName,
+      profileUrl: currentUser.profileUrl,
+      firstName: currentUser.firstName,
+      lastName: currentUser.lastName,
+      phoneNumber: currentUser.phoneNumber,
     },
   })
 
@@ -53,15 +54,8 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
         profileUrl: data.profileUrl,
         firstName: data.firstName,
         lastName: data.lastName,
-      })
-
-      update({
-        user: {
-          ...currentUser,
-          profileUrl: data.profileUrl,
-          firstName: data.firstName,
-          lastName: data.lastName,
-        },
+        fullName: `${data.firstName} ${data.lastName}`,
+        phoneNumber: data.phoneNumber,
       })
 
       router.push("/dashboard")
@@ -82,7 +76,7 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
   if (!isMounted) return null
 
   return (
-    <div className="pt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div className=" sm:mx-auto sm:w-full sm:max-w-md">
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
         <div className="mb-6">
           <h1 className="font-extrabold  text-xl lg:text-2xl mb-1 ">
@@ -142,7 +136,18 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
               errors={errors}
             />
           </div>
-
+          <div>
+            <Label htmlFor="lastName" className="mb-2 block">
+              Phone Number
+            </Label>
+            <Input
+              type="phoneNumber"
+              id="phoneNumber"
+              register={register}
+              disabled={isLoading}
+              errors={errors}
+            />
+          </div>
           <div>
             <Button disabled={isLoading} type="submit" className="w-full">
               Finish

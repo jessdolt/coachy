@@ -1,24 +1,20 @@
-import { withAuth } from "next-auth/middleware"
+import { NextRequestWithAuth, withAuth } from "next-auth/middleware"
 import { NextResponse } from "next/server"
 import { redirect } from "next/navigation"
+import { Roles } from "./types"
 export default withAuth(
-  async function middleware(req) {
-    const user = req.nextauth.token?.user as any
-    const url = req.nextUrl.clone()
+  async function middleware(request: NextRequestWithAuth) {
+    const user = request.nextauth.token as any
+    const url = request.nextUrl.clone()
 
-    // if (!user.firstName && !user.lastName && !user.profileUrl) {
-    //   url.pathname = "/setup"
-    //   return NextResponse.redirect(url)
-    // }
+    if (
+      request.nextUrl.pathname.startsWith("/availability") &&
+      user.role !== Roles.Coach
+    ) {
+      return NextResponse.rewrite(new URL("/dashboard", request.url))
+    }
 
-    // Check if the user is logged in and it's their first login
-    // if (user && user?.user?.firstLogin) {
-    //   // Redirect to the reset-password route
-    //   url.pathname = "/reset-password"
-    //   return NextResponse.redirect(url)
-    //   // console.log("here")
-    //   // redirect("/reset-password")
-    // }
+    console.log("here")
   },
   {
     callbacks: {
