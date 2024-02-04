@@ -14,7 +14,7 @@ const Coaches: React.FC<coachesProps> = ({ data }) => {
       {data.map((coach, index) => (
         <Card
           key={index}
-          className="col-span-3 md:col-span-2 lg:col-span-1 border-t-4 border-t-black/80"
+          className="col-span-3 md:col-span-2 lg:col-span-1 border-t-4 border-t-black/60"
         >
           <CardHeader>
             <div className="flex items-center gap-4">

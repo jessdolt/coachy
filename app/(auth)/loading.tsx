@@ -1,6 +1,5 @@
 import { Loader2Icon } from "lucide-react"
 import React from "react"
-import { LoaderIcon } from "react-hot-toast"
 
 const Loading = () => {
   return (

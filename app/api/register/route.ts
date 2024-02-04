@@ -27,6 +27,7 @@ export async function POST(request: Request) {
       firstName: "",
       lastName: "",
       profileUrl: "",
+      id: user_id,
     })
 
     if (role === ROLES.COACH) {

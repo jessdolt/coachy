@@ -26,7 +26,7 @@ const RegisterForm = () => {
   }, [status, router])
 
   const [isLoading, setIsLoading] = useState(false)
-  const roles = [ROLES.COACH, ROLES.STUDENT]
+  const roles = [ROLES.STUDENT, ROLES.COACH]
 
   const {
     register,
@@ -101,8 +101,9 @@ const RegisterForm = () => {
             </Label>
 
             <Input
-              type="text"
+              type="email"
               id="email"
+              required
               register={register}
               errors={errors}
               disabled={isLoading}
@@ -118,6 +119,7 @@ const RegisterForm = () => {
               register={register}
               disabled={isLoading}
               errors={errors}
+              required
             />
           </div>
 

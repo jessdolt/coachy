@@ -10,12 +10,6 @@
   width: 100% !important;
 }
 
-.rr-focus-reset {
-  /* Your styles */
-  outline: none !important;
-  border: none !important;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -87,4 +81,10 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.rr-focus-reset {
+  /* Your styles */
+  outline: none !important;
+  border: none !important;
 }

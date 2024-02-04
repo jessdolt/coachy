@@ -123,6 +123,7 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
               register={register}
               errors={errors}
               disabled={isLoading}
+              required
             />
           </div>
           <div>
@@ -130,11 +131,12 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
               Last Name
             </Label>
             <Input
-              type="lastName"
+              type="text"
               id="lastName"
               register={register}
               disabled={isLoading}
               errors={errors}
+              required
             />
           </div>
           <div>
@@ -142,11 +144,12 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
               Phone Number
             </Label>
             <Input
-              type="phoneNumber"
+              type="text"
               id="phoneNumber"
               register={register}
               disabled={isLoading}
               errors={errors}
+              required
             />
           </div>
           <div>

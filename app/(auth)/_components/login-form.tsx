@@ -36,15 +36,19 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     setIsLoading(true)
 
-    const callback = await signIn("credentials", {
-      ...data,
-      redirect: false,
-    })
+    try {
+      const callback = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      })
 
-    if (callback?.error) toast.error(callback.error)
-    if (callback?.ok && !callback?.error) {
-      toast.success("Logged in")
-      router.push("/book")
+      if (callback?.error) toast.error(callback.error)
+      if (callback?.ok && !callback?.error) {
+        toast.success("Logged in")
+        router.push("/book")
+      }
+    } catch (e) {
+      toast.error("User not found")
     }
 
     setIsLoading(false)

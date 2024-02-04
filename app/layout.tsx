@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 import { Noto_Sans } from "next/font/google"
-import "./globals.css"
 import AuthContext from "@/context/AuthContext"
 import ToasterContext from "@/context/ToasterContext"
 import "@smastrom/react-rating/style.css"
+import "./globals.css"
 
 const notoSans = Noto_Sans({ subsets: ["latin"] })
 
