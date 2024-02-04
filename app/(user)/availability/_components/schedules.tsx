@@ -2,16 +2,30 @@ import React, { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import moment from "moment"
-import { Control, UseFormRegister, useFieldArray } from "react-hook-form"
+import {
+  Control,
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetError,
+  UseFormStateProps,
+  useFieldArray,
+} from "react-hook-form"
 import { FormValues } from "./availability-form"
 import TimeSlots from "./timeslot"
 
 interface SchedulesProps {
   register: UseFormRegister<FormValues>
   control: Control<FormValues>
+  setError: UseFormSetError<FormValues>
+  errors: FieldErrors<FormValues>
 }
 
-const Schedules: React.FC<SchedulesProps> = ({ register, control }) => {
+const Schedules: React.FC<SchedulesProps> = ({
+  register,
+  control,
+  setError,
+  errors,
+}) => {
   const { fields, update } = useFieldArray({
     control,
     name: "days",
@@ -50,8 +64,9 @@ const Schedules: React.FC<SchedulesProps> = ({ register, control }) => {
               {day.isChecked && (
                 <TimeSlots
                   control={control}
-                  register={register}
                   arrayIndex={index}
+                  setError={setError}
+                  errors={errors}
                 />
               )}
             </div>

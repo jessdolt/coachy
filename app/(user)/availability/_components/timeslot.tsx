@@ -1,28 +1,35 @@
 import TimePicker from "@/app/_components/time-picker"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash } from "lucide-react"
-import React, { useEffect } from "react"
-import { Control, UseFormRegister, useFieldArray } from "react-hook-form"
+import React from "react"
+import {
+  Control,
+  FieldErrors,
+  UseFormSetError,
+  useFieldArray,
+} from "react-hook-form"
 import { FormValues } from "./availability-form"
 import { TimeSlot } from "@/types"
-import { addTwoHours, getTimeOverlap } from "@/lib/utils"
+import { addTwoHours } from "@/lib/utils"
 
 interface TimeSlotsProps {
   arrayIndex: number
   control: Control<FormValues>
-  register: UseFormRegister<FormValues>
+  setError: UseFormSetError<FormValues>
+  errors: FieldErrors<FormValues>
 }
 const TimeSlots: React.FC<TimeSlotsProps> = ({
   arrayIndex,
   control,
-  register,
+  setError,
+  errors,
 }) => {
   const { fields, remove, append, update } = useFieldArray({
     control,
     name: `days[${arrayIndex}].hours` as "days.0.hours",
   })
 
-  const handleInsertNewTimeSlot = (index: number, hour: TimeSlot) => {
+  const handleInsertNewTimeSlot = () => {
     const lastTimeSlot = fields[fields.length - 1]
     const newStartTime = lastTimeSlot.endTime
     const newEndTime = addTwoHours(lastTimeSlot.endTime)
@@ -35,9 +42,15 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({
     hour: TimeSlot,
     value: string
   ) => {
-    // const isOverlapping = getTimeOverlap(fields, value)
-    // console.log(isOverlapping)
     const newValue = { ...hour, startTime: value, endTime: addTwoHours(value) }
+
+    // Check if overlapping
+    // if yes get the index of the overlapping time slot and set error
+    //  Error here
+    // setError(`days[${arrayIndex}].hours[${index}].startTime`, {
+    //   type: "manual",
+    //   message: "Start time cannot be after end time",
+    // })
 
     update(index, { ...newValue })
   }
@@ -46,29 +59,33 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({
     <div className="lg:ml-2 flex flex-col gap-4">
       {fields.map((hour, index) => (
         <div className="flex items-center gap-2" key={hour.id}>
-          <div className="flex items-center gap-2">
-            <TimePicker
-              arrayIndex={index}
-              value={hour.startTime}
-              hour={hour}
-              onChange={handleSelectOnChange}
-            />
-            <div>-</div>
-            <TimePicker
-              arrayIndex={index}
-              value={hour.endTime}
-              hour={hour}
-              onChange={handleSelectOnChange}
-              disabled
-            />
+          <div className="flex flex-col ">
+            <div className="flex items-center gap-2 ">
+              <TimePicker
+                arrayIndex={index}
+                value={hour.startTime}
+                hour={hour}
+                onChange={handleSelectOnChange}
+              />
+              <div>-</div>
+              <TimePicker
+                arrayIndex={index}
+                value={hour.endTime}
+                hour={hour}
+                onChange={handleSelectOnChange}
+                disabled
+              />
+            </div>
+            {errors?.days?.[arrayIndex]?.hours?.[index]?.startTime && (
+              <p className="text-xs text-red-600">Error here</p>
+            )}
           </div>
-
           {index === 0 ? (
             <Button
               variant="ghost"
               size="icon"
               type="button"
-              onClick={() => handleInsertNewTimeSlot(index, hour)}
+              onClick={() => handleInsertNewTimeSlot()}
             >
               <Plus className="w-3 h-3 lg:h-4 lg:w-4" />
             </Button>

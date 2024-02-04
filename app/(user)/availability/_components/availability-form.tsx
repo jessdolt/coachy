@@ -46,6 +46,7 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
     control,
     register,
     setValue,
+    setError,
     watch,
     handleSubmit,
     formState: { errors, isLoading },
@@ -150,7 +151,12 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
       {acceptingBooking && (
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mt-4 grid grid-cols-3 gap-x-8 gap-y-6">
-            <Schedules register={register} control={control} />
+            <Schedules
+              register={register}
+              control={control}
+              setError={setError}
+              errors={errors}
+            />
             <TimezonePicker
               value={timezone}
               onChange={handleTimezoneOnChange}
