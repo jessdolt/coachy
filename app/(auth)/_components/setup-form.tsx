@@ -68,7 +68,6 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
   })
 
   const profileUrl = form.watch("profileUrl")
-  console.log(form.formState.errors)
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsLoading(true)
@@ -84,7 +83,6 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
 
       // router.push("/book")
     } catch (error) {
-      console.log(error)
       toast.error("Something went wrong")
     } finally {
       setIsLoading(false)

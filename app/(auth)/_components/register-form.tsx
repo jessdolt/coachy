@@ -56,7 +56,6 @@ const RegisterForm = () => {
         router.push("/setup")
       }
     } catch (err: any) {
-      console.log(err)
       toast.error("Something went wrong")
     } finally {
       setIsLoading(false)

@@ -1,14 +1,16 @@
 import getCurrentUser from "./getCurrentUser"
 import {
+  and,
   collection,
   doc,
   getDoc,
   getDocs,
+  or,
   query,
   where,
 } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import { Meeting, ROLES } from "@/types"
+import { Meeting, ROLES, STATUS } from "@/types"
 import { toDate } from "date-fns"
 import {
   convertISOToTimeString,
@@ -29,8 +31,13 @@ const getPastBookings = async (): Promise<Meeting[] | []> => {
 
     const q = query(
       collection(db, "meeting"),
-      where(field, "==", currentUser.id),
-      where("endTime", "<", toDate(new Date()))
+      and(
+        where(field, "==", currentUser.id),
+        or(
+          where("status", "==", STATUS.DONE),
+          where("endTime", "<", toDate(new Date()))
+        )
+      )
     )
 
     const querySnapshot = await getDocs(q)
@@ -72,7 +79,6 @@ const getPastBookings = async (): Promise<Meeting[] | []> => {
 
     return a as Meeting[]
   } catch (e) {
-    console.log(e)
     return []
   }
 }

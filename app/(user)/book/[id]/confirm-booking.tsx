@@ -46,7 +46,6 @@ const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
       toast.success("Booking confirmed")
       router.push("/bookings/upcoming")
     } catch (e) {
-      console.log(e)
       toast.error("Something went wrong")
     }
   }

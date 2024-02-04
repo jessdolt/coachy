@@ -17,7 +17,6 @@ const BookIdPage: React.FC<BookIdPageProps> = async ({ params: { id } }) => {
   const coach = await getCoach(id)
 
   if (!coach || !availability) {
-    console.log("here")
     notFound()
   }
 

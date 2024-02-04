@@ -18,6 +18,11 @@ const TabMain = () => {
       label: "Past",
       isActive: pathname === "/bookings/past",
     },
+    {
+      path: "/bookings/cancelled",
+      label: "Cancelled",
+      isActive: pathname === "/bookings/cancelled",
+    },
   ]
 
   return (

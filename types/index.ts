@@ -28,6 +28,12 @@ export enum ROLES {
   STUDENT = "Student",
 }
 
+export enum STATUS {
+  PENDING = "pending",
+  CANCELLED = "cancelled",
+  DONE = "done",
+}
+
 export interface Availability {
   timezone: string
   user_id: string

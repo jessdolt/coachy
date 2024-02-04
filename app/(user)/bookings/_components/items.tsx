@@ -1,17 +1,28 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
 import { Card } from "@/components/ui/card"
-import { Meeting } from "@/types"
+import { Meeting, ROLES, User } from "@/types"
 import { Mail, Phone } from "lucide-react"
 import moment from "moment"
 import React from "react"
 import ActionsButton from "./actions-button"
+import CoachActionButtons from "./coach-actions-button"
+import StudentActionsButtons from "./student-actions.button"
 
 interface ItemsProps {
   data: Meeting[]
+  cancelledBooking?: boolean
   pastBooking?: boolean
+  currentUser: User
 }
 
-const Items: React.FC<ItemsProps> = ({ data, pastBooking }) => {
+const Items: React.FC<ItemsProps> = ({
+  data,
+  pastBooking,
+  cancelledBooking = false,
+  currentUser,
+}) => {
+  const isCoach = currentUser.role === ROLES.COACH
+
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -48,7 +59,20 @@ const Items: React.FC<ItemsProps> = ({ data, pastBooking }) => {
                   <p>{meeting?.otherUser?.email}</p>
                 </div>
               </div>
-              {pastBooking && <ActionsButton data={meeting} />}
+
+              {/* upcoming bookings button */}
+              {!cancelledBooking && !pastBooking && isCoach && (
+                <CoachActionButtons data={meeting} />
+              )}
+
+              {!cancelledBooking && !pastBooking && !isCoach && (
+                <StudentActionsButtons data={meeting} />
+              )}
+
+              {/* past bookings */}
+              {!cancelledBooking && pastBooking && (
+                <ActionsButton data={meeting} />
+              )}
             </div>
           </Card>
         ))}

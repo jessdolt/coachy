@@ -47,8 +47,6 @@ export async function POST(request: Request) {
       { status: 201 }
     )
   } catch (error) {
-    console.log(error, "REGISTRATION_ERROR")
-
     return new NextResponse("Internal Error", { status: 500 })
   }
 }

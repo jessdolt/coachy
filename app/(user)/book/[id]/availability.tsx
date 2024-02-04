@@ -1,10 +1,7 @@
 "use client"
-import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Card } from "@/components/ui/card"
 import {
-  cn,
-  combineDateAndTime,
   convertISOToTimeString,
   convertUnixTimestampToISOString,
   getDatesForDaysInMonth,
@@ -13,13 +10,14 @@ import {
 } from "@/lib/utils"
 import { Availability, TimeSlot } from "@/types"
 import moment from "moment"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import NoDate from "./no-date"
 import BookingForm from "./booking-form"
 import toast from "react-hot-toast"
-import { collection, getDoc, getDocs, query, where } from "firebase/firestore"
+import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { toDate } from "date-fns"
+
 interface AvailabilityProps {
   data: Availability
 }
@@ -73,7 +71,6 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
 
         setTimes(availableTime.length === 0 ? workingSched[day] : availableTime)
       } catch (e) {
-        console.log(e)
         toast.error("Something went wrong")
       } finally {
         setIsLoading(false)

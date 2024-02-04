@@ -5,15 +5,20 @@ import {
   doc,
   getDoc,
   getDocs,
+  or,
   query,
   where,
 } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { Meeting, ROLES, STATUS } from "@/types"
 import { toDate } from "date-fns"
-import { filterUniqueUsers, parseToTime } from "@/lib/utils"
+import {
+  convertISOToTimeString,
+  convertUnixTimestampToISOString,
+  filterUniqueUsers,
+} from "@/lib/utils"
 
-const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
+const getCancelledBookings = async (): Promise<Meeting[] | []> => {
   try {
     const currentUser = await getCurrentUser()
 
@@ -26,13 +31,10 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
 
     const q = query(
       collection(db, "meeting"),
-      where(field, "==", currentUser.id),
-      where("startTime", ">=", toDate(new Date())),
-      where("status", "==", STATUS.PENDING)
+      where("status", "==", STATUS.CANCELLED)
     )
 
     const querySnapshot = await getDocs(q)
-
     const result = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -40,8 +42,12 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
 
     const upcomingBookings = result.map((upcoming) => ({
       ...upcoming,
-      startTime: parseToTime(upcoming.startTime.seconds),
-      endTime: parseToTime(upcoming.endTime.seconds),
+      startTime: convertISOToTimeString(
+        convertUnixTimestampToISOString(upcoming.startTime.seconds)
+      ),
+      endTime: convertISOToTimeString(
+        convertUnixTimestampToISOString(upcoming.endTime.seconds)
+      ),
       date: toDate(upcoming.date.toDate()),
     }))
 
@@ -59,7 +65,6 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
       const otherUser = otherUsers.find(
         (user: any) => user.id === booking[field_other_user]
       )
-
       return {
         ...booking,
         otherUser,
@@ -72,4 +77,4 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
   }
 }
 
-export default getUpcomingBookings
+export default getCancelledBookings

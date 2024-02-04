@@ -87,7 +87,6 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
       toast.success("Changes saved")
     } catch (error) {
       toast.error("Error updating availability")
-      console.log(error)
     } finally {
       setIsSaving(false)
     }
@@ -107,7 +106,6 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
 
       setValue("acceptingBooking", value)
     } catch (e) {
-      console.log(e)
       toast.error("Something went wrong. Please try again")
     }
   }

@@ -17,9 +17,9 @@ const ActionsButton: React.FC<ActionsButton> = async ({ data }) => {
   const userRole = currentUser.role
   const hasFeedback = !!data.review && !!data.rating
 
-  const canGiveFeedback = userRole === ROLES.STUDENT && !hasFeedback
+  const canGiveFeedback = userRole === ROLES.COACH && !hasFeedback
   const canViewFeedback = hasFeedback
-  const noFeedbackYet = userRole === ROLES.COACH && !hasFeedback
+  const noFeedbackYet = userRole === ROLES.STUDENT && !hasFeedback
 
   return (
     <div>
