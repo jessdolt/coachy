@@ -5,7 +5,7 @@ import { db } from "@/lib/firebase"
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { revalidatePath } from "next/cache"
 import { COLLECTION_USERS } from "./collections"
-import { Roles } from "@/types"
+import { ROLES } from "@/types"
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -66,7 +66,7 @@ export const authOptions: AuthOptions = {
     },
     async jwt({ token, trigger, user, session }) {
       if (user) {
-        token.role = user.role as Roles
+        token.role = user.role as ROLES
         token.id = user.id
         token.profileUrl = user.profileUrl
       }

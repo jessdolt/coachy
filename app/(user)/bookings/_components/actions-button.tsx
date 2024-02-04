@@ -1,4 +1,4 @@
-import { Meeting, Roles } from "@/types"
+import { Meeting, ROLES } from "@/types"
 import React from "react"
 import FeedbackButton from "./feedback-button"
 import ViewFeedbackButton from "./view-feedback-button"
@@ -18,7 +18,7 @@ const ActionsButton: React.FC<ActionsButton> = async ({ data }) => {
 
   return (
     <div>
-      {userRole === Roles.Student ? (
+      {userRole === ROLES.STUDENT ? (
         !hasFeedback ? (
           <FeedbackButton meeting_id={data.id} />
         ) : null

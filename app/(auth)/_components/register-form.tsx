@@ -1,11 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import {
-  useForm,
-  FieldValues,
-  SubmitHandler,
-  Controller,
-} from "react-hook-form"
+import { useForm, FieldValues, SubmitHandler } from "react-hook-form"
 import axios from "axios"
 import { toast } from "react-hot-toast"
 import { signIn, useSession } from "next-auth/react"
@@ -16,10 +11,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import AuthSocialButton from "./auth-social-button"
-import { BsGithub, BsGoogle } from "react-icons/bs"
 import BackButton from "./back-button"
-import { Roles } from "@/types"
+import { ROLES } from "@/types"
 
 const RegisterForm = () => {
   const { status } = useSession()
@@ -28,12 +21,12 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/dashboard")
+      router.push("/book")
     }
   }, [status, router])
 
   const [isLoading, setIsLoading] = useState(false)
-  const roles = [Roles.Coach, Roles.Student]
+  const ROLES = [ROLES.COACH, ROLES.STUDENT]
 
   const {
     register,
@@ -43,7 +36,7 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      role: roles[0],
+      role: ROLES[0],
       email: "",
       password: "",
     },
@@ -70,17 +63,6 @@ const RegisterForm = () => {
     }
   }
 
-  const socialAction = async (action: string) => {
-    setIsLoading(true)
-    const callback = await signIn(action, { redirect: false })
-    if (callback?.error) toast.error(callback.error)
-    if (callback?.ok && !callback?.error) {
-      toast.success("Logged in")
-      router.push("/setup")
-    }
-    setIsLoading(false)
-  }
-
   return (
     <div className="pt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
@@ -105,7 +87,7 @@ const RegisterForm = () => {
                 setValue("role", value)
               }}
             >
-              {roles.map((role) => (
+              {ROLES.map((role) => (
                 <div className="flex items-center space-x-2" key={role}>
                   <RadioGroupItem value={role} id={role} />
                   <Label htmlFor={role}>{role}</Label>
@@ -145,31 +127,6 @@ const RegisterForm = () => {
             </Button>
           </div>
         </form>
-
-        <div className="mt-6">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">
-                Or continue with
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-6 flex gap-2">
-          <AuthSocialButton
-            icon={BsGithub}
-            onClick={() => socialAction("github")}
-          />
-
-          <AuthSocialButton
-            icon={BsGoogle}
-            onClick={() => socialAction("google")}
-          />
-        </div>
 
         <div className="flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500">
           Already have an account?

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { COLLECTION_USERS } from "@/lib/collections"
 import { db } from "@/lib/firebase"
-import { Roles, User } from "@/types"
+import { ROLES, User } from "@/types"
 import {
   collection,
   getDocs,
@@ -19,18 +19,17 @@ import { useDebounce } from "@/hooks/useDebounce"
 import Coaches from "./coaches"
 import SkeletonLoader from "./skeleton-loader"
 
-interface MonthTabProps {
+interface CoachesContainerProps {
   currentUser: User
 }
 
-const nextPage = 1
+const nextPage = 6
 
-const MonthTab: React.FC<MonthTabProps> = ({ currentUser }) => {
+const CoachesContainer: React.FC<CoachesContainerProps> = ({ currentUser }) => {
   const [coaches, setCoaches] = useState<User[]>([])
   const [searchValue, setSearchValue] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [limitPage, setLimitPage] = useState(1)
-
+  const [limitPage, setLimitPage] = useState(6)
   const debouncedSearchValue = useDebounce(searchValue, 300)
 
   useEffect(() => {
@@ -42,7 +41,7 @@ const MonthTab: React.FC<MonthTabProps> = ({ currentUser }) => {
           orderBy("fullName"),
           startAt(searchValue),
           limit(limitPage),
-          where("role", "==", Roles.Coach)
+          where("role", "==", ROLES.COACH)
         )
 
         const querySnapshot2 = await getDocs(w)
@@ -56,11 +55,11 @@ const MonthTab: React.FC<MonthTabProps> = ({ currentUser }) => {
       }
     }
     fetchCoaches()
-  }, [limitPage, debouncedSearchValue, searchValue])
+  }, [limitPage, debouncedSearchValue])
 
   return (
     <div className="mt-4">
-      <div className="max-w-[600px] mx-auto">
+      <div className="max-w-[60%] mx-auto">
         <div className="relative">
           <Input
             className="shadow-sm"
@@ -81,7 +80,7 @@ const MonthTab: React.FC<MonthTabProps> = ({ currentUser }) => {
 
       {isLoading ? <SkeletonLoader /> : <Coaches data={coaches} />}
 
-      <div className="flex justify-center mt-4 py-4">
+      {/* <div className="flex justify-center mt-4 py-4">
         <Button
           onClick={() => setLimitPage((prevLimit) => prevLimit + nextPage)}
           size="lg"
@@ -90,9 +89,9 @@ const MonthTab: React.FC<MonthTabProps> = ({ currentUser }) => {
         >
           Load more
         </Button>
-      </div>
+      </div> */}
     </div>
   )
 }
 
-export default MonthTab
+export default CoachesContainer

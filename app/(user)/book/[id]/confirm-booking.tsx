@@ -64,7 +64,11 @@ const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
         <DialogHeader>
           <DialogTitle>Confirm Booking</DialogTitle>
         </DialogHeader>
-        <DialogDescription>Short description</DialogDescription>
+        <DialogDescription>
+          Ensure your spot for a personalized 1-on-1 interview coaching session
+          by clicking 'Confirm Booking.' This step finalizes your reservation
+          and secures dedicated time with your coach.
+        </DialogDescription>
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
             <Button type="button" variant="secondary">

@@ -18,8 +18,8 @@ const MobileNavbar = () => {
           <Button>Start now</Button>
         </Link>
       ) : (
-        <Link href="/dashboard">
-          <Button>Dashboard</Button>
+        <Link href="/book">
+          <Button>Account</Button>
         </Link>
       )}
     </nav>

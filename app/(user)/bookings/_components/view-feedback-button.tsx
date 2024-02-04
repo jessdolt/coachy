@@ -13,7 +13,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { Eye, Star } from "lucide-react"
 import NewRating from "./rating/rating"
-import { Roles } from "@/types"
+import { ROLES } from "@/types"
 
 interface FeedbackButtonProps {
   review: string
@@ -26,7 +26,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
   rating,
   role,
 }) => {
-  const isStudent = role === Roles.Student
+  const isStudent = role === ROLES.STUDENT
 
   const dialogTitle = isStudent ? "Submitted Feedback" : "Feedback"
   const dialogSubTitle = isStudent

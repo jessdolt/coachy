@@ -1,10 +1,9 @@
 "use client"
 
 import useRoutes from "@/hooks/useRoutes"
-
 import Logo from "@/app/_components/navbar/logo"
 import { Button } from "@/components/ui/button"
-import { signOut } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import SidebarItem from "./sidebar-item"
 import { BiLogOut } from "react-icons/bi"
 

@@ -41,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
             <nav>
               <Avatar className="w-12 h-12 cursor-pointer outline outline-1 outline-white/70 ">
                 <AvatarImage
-                  className=" "
+                  className="object-cover"
                   src={currentUser.profileUrl || "/images/placeholder.jpg"}
                 ></AvatarImage>
                 <AvatarFallback className="bg-white">{initials}</AvatarFallback>

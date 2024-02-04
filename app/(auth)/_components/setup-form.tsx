@@ -59,7 +59,7 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
         phoneNumber: data.phoneNumber,
       })
 
-      router.push("/dashboard")
+      router.push("/book")
     } catch (error) {
       console.log(error)
       toast.error("Something went wrong")

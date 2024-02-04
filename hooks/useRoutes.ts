@@ -1,49 +1,36 @@
-import { Roles } from "@/types"
-import { Book, CalendarCheck, LayoutDashboard } from "lucide-react"
+import { ROLES } from "@/types"
+import { Book, BookCopy, CalendarCheck } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation"
 import { useMemo } from "react"
 
 const useRoutes = () => {
   const pathname = usePathname()
-  const { data, status } = useSession()
-
-  // if (status != "authenticated") {
-  //   return []
-  // }
-
-  // const userRole = data?.user.role
+  const { data } = useSession()
 
   const routes = [
-    {
-      name: "Dashboard",
-      path: "/dashboard",
-      icon: LayoutDashboard,
-      isActive: pathname === "/dashboard",
-      roles: [Roles.Coach, Roles.Student],
-    },
     {
       name: "Availability",
       path: "/availability",
       icon: CalendarCheck,
       isActive: pathname === "/availability",
-      roles: [Roles.Coach, Roles.Student],
+      ROLES: [ROLES.COACH],
     },
     {
       name: "Book",
       path: "/book",
       icon: Book,
       isActive: pathname === "/book",
-      roles: [Roles.Coach, Roles.Student],
+      ROLES: [ROLES.STUDENT],
     },
     {
       name: "Bookings",
       path: "/bookings/upcoming",
-      icon: Book,
+      icon: BookCopy,
       isActive: pathname.startsWith("/bookings"),
-      roles: [Roles.Coach, Roles.Student],
+      ROLES: [ROLES.COACH, ROLES.STUDENT],
     },
-  ]
+  ].filter((route) => route.ROLES.find((role) => role === data?.user?.role))
 
   return useMemo(() => routes, [pathname])
 }

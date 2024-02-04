@@ -5,7 +5,7 @@ import { addDoc, collection, doc, setDoc } from "firebase/firestore"
 import { v4 as uuidv4 } from "uuid"
 import { DEFAULT_DAYS } from "@/lib/constants"
 import moment from "moment-timezone"
-import { Roles } from "@/types"
+import { ROLES } from "@/types"
 import { COLLECTION_USERS } from "@/lib/collections"
 
 export async function POST(request: Request) {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       profileUrl: "",
     })
 
-    if (role === Roles.Coach) {
+    if (role === ROLES.COACH) {
       await setDoc(doc(db, "availability", user_id), {
         days: DEFAULT_DAYS,
         timezone: moment.tz.guess(),

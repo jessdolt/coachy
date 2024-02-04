@@ -23,9 +23,9 @@ export interface TimeSlot {
   endTime: string
 }
 
-export enum Roles {
-  Coach = "Coach",
-  Student = "Student",
+export enum ROLES {
+  COACH = "Coach",
+  STUDENT = "Student",
 }
 
 export interface Availability {

@@ -1,12 +1,6 @@
 import { User } from "@/types"
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card"
+import { Card, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
@@ -17,10 +11,10 @@ interface coachesProps {
 const Coaches: React.FC<coachesProps> = ({ data }) => {
   return (
     <div className="grid grid-cols-3 mt-8 gap-4">
-      {data.map((coach) => (
+      {data.map((coach, index) => (
         <Card
+          key={index}
           className="col-span-3 md:col-span-2 lg:col-span-1 border-t-4 border-t-black/80"
-          key={coach.id}
         >
           <CardHeader>
             <div className="flex items-center gap-4">

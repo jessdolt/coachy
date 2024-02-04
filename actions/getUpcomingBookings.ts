@@ -8,7 +8,7 @@ import {
   where,
 } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import { Meeting, Roles } from "@/types"
+import { Meeting, ROLES } from "@/types"
 import { toDate } from "date-fns"
 import { filterUniqueUsers, parseToTime } from "@/lib/utils"
 
@@ -19,9 +19,9 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
     if (!currentUser) throw new Error("Unauthorized")
 
     const user_role = currentUser.role
-    const field = user_role === Roles.Student ? "user_id" : "coach_id"
+    const field = user_role === ROLES.STUDENT ? "user_id" : "coach_id"
     const field_other_user =
-      user_role === Roles.Student ? "coach_id" : "user_id"
+      user_role === ROLES.STUDENT ? "coach_id" : "user_id"
 
     const q = query(
       collection(db, "meeting"),

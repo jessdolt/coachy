@@ -1,6 +1,6 @@
 import React from "react"
 
-import MonthTab from "./month-tab"
+import CoachesContainer from "./coaches-container"
 import getCurrentUser from "@/actions/getCurrentUser"
 
 const BookPage = async () => {
@@ -17,7 +17,7 @@ const BookPage = async () => {
         </p>
       </div>
 
-      <MonthTab currentUser={currentUser} />
+      <CoachesContainer currentUser={currentUser} />
     </>
   )
 }
