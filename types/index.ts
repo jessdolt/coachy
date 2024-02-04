@@ -53,4 +53,6 @@ export interface Meeting {
   status: string
   timezone: string
   otherUser?: User
+  review: string
+  rating: number
 }

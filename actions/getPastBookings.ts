@@ -34,7 +34,10 @@ const getPastBookings = async (): Promise<Meeting[] | []> => {
     )
 
     const querySnapshot = await getDocs(q)
-    const result = querySnapshot.docs.map((doc) => doc.data())
+    const result = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as any[]
 
     const upcomingBookings = result.map((upcoming) => ({
       ...upcoming,

@@ -10,11 +10,7 @@ import {
 import { db } from "@/lib/firebase"
 import { Meeting, Roles } from "@/types"
 import { toDate } from "date-fns"
-import {
-  convertISOToTimeString,
-  convertUnixTimestampToISOString,
-  filterUniqueUsers,
-} from "@/lib/utils"
+import { filterUniqueUsers, parseToTime } from "@/lib/utils"
 
 const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
   try {
@@ -26,7 +22,6 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
     const field = user_role === Roles.Student ? "user_id" : "coach_id"
     const field_other_user =
       user_role === Roles.Student ? "coach_id" : "user_id"
-    const protery_name = user_role === Roles.Student ? "coach" : "student"
 
     const q = query(
       collection(db, "meeting"),
@@ -35,16 +30,16 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
     )
 
     const querySnapshot = await getDocs(q)
-    const result = querySnapshot.docs.map((doc) => doc.data())
+
+    const result = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as any[]
 
     const upcomingBookings = result.map((upcoming) => ({
       ...upcoming,
-      startTime: convertISOToTimeString(
-        convertUnixTimestampToISOString(upcoming.startTime.seconds)
-      ),
-      endTime: convertISOToTimeString(
-        convertUnixTimestampToISOString(upcoming.endTime.seconds)
-      ),
+      startTime: parseToTime(upcoming.startTime.seconds),
+      endTime: parseToTime(upcoming.endTime.seconds),
       date: toDate(upcoming.date.toDate()),
     }))
 

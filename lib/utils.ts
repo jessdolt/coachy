@@ -78,6 +78,37 @@ export function getDatesForDaysInMonth(dayIndices: any[], inputDate?: Date) {
   return dates
 }
 
+export function getDatesForFirstWeekInMonth(
+  dayIndices: any[],
+  inputDate?: Date
+) {
+  // Get the current date
+  const currentDate = inputDate ? moment(inputDate) : moment()
+
+  // Get the current month
+  const currentMonth = currentDate.month()
+
+  // Create an array to store the dates
+  const dates = []
+
+  // Loop through each day index in the array
+  for (const dayIndex of dayIndices) {
+    // Use Moment.js to get the first occurrence of the specified day in the current month
+    let dateObject = moment()
+      .month(currentMonth)
+      .date(1)
+      .day(dayIndex + 7)
+
+    // Check if the date is in the first week
+    if (dateObject.week() === currentDate.week()) {
+      dates.push(dateObject.toDate())
+    }
+  }
+
+  // Return the array of dates in the first week
+  return dates
+}
+
 export const parseMapDaysToArray = (map: Availability) => {
   return Object.entries(map.days).map((day) => day[1])
 }
@@ -137,4 +168,8 @@ export function filterUniqueUsers(dataArray: any[], property: string) {
     // If user_id is already in the Set, exclude the object from the result
     return false
   })
+}
+
+export function parseToTime(time: number) {
+  return convertISOToTimeString(convertUnixTimestampToISOString(time))
 }

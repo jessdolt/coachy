@@ -2,7 +2,7 @@ import getCurrentUser from "@/actions/getCurrentUser"
 import getUpcomingBookings from "@/actions/getUpcomingBookings"
 import { Card } from "@/components/ui/card"
 import { Button } from "react-day-picker"
-import Items from "./items"
+import Items from "../_components/items"
 
 const UpcomingPage = async () => {
   const upcomings = await getUpcomingBookings()

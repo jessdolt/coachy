@@ -1,17 +1,18 @@
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Meeting } from "@/types"
-import { Mail, MoreVertical, Paperclip, Phone, Send } from "lucide-react"
+import { Mail, Phone } from "lucide-react"
 import moment from "moment"
 import React from "react"
-import FeedbackButton from "../past/feedback-button"
+import FeedbackButton from "./feedback-button"
+import ActionsButton from "./actions-button"
 
 interface ItemsProps {
   upcomings: Meeting[]
+  pastBooking?: boolean
 }
 
-const Items: React.FC<ItemsProps> = ({ upcomings }) => {
+const Items: React.FC<ItemsProps> = ({ upcomings, pastBooking }) => {
   return (
     <>
       <div className="flex flex-col gap-4">
@@ -47,9 +48,7 @@ const Items: React.FC<ItemsProps> = ({ upcomings }) => {
                   <p>{upcoming?.otherUser?.email}</p>
                 </div>
               </div>
-              <div>
-                <FeedbackButton />
-              </div>
+              {pastBooking && <ActionsButton data={upcoming} />}
             </div>
           </Card>
         ))}

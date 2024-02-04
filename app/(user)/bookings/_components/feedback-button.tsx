@@ -11,50 +11,35 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { db } from "@/lib/firebase"
-import { combineDateAndTime } from "@/lib/utils"
-import { TimeSlot } from "@/types"
-import { addDoc, collection, doc, setDoc } from "firebase/firestore"
 import { Send, Star } from "lucide-react"
-import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
-import Rating from "react-rating"
+import NewRating from "./rating/rating"
+import { doc, updateDoc } from "firebase/firestore"
+import { db } from "@/lib/firebase"
 
 interface FeedbackButtonProps {
-  time: TimeSlot
-  date: Date
-  coach_id: string
+  meeting_id: string
 }
 
-const FeedbackButton: React.FC<FeedbackButtonProps> = ({
-  time,
-  coach_id,
-  date,
-}) => {
+const FeedbackButton: React.FC<FeedbackButtonProps> = ({ meeting_id }) => {
   const router = useRouter()
+
   const [formValue, setFormValue] = useState({
     rating: 0,
     message: "",
   })
 
-  const { data } = useSession()
-
   const submitFeedback = async () => {
     try {
-      //   await setDoc(collection(db, "meeting"), {
-      //     coach_id: coach_id,
-      //     user_id: data?.user.id,
-      //     startTime: combineDateAndTime(date, time.startTime),
-      //     endTime: combineDateAndTime(date, time.endTime),
-      //     date,
-      //     review: "",
-      //     status: "pending",
-      //   })
+      await updateDoc(doc(db, "meeting", meeting_id), {
+        rating: formValue.rating,
+        review: formValue.message,
+      })
 
       toast.success("Booking confirmed")
-      router.push("/bookings/upcoming")
+      router.refresh()
     } catch (e) {
       console.log(e)
       toast.error("Something went wrong")
@@ -69,7 +54,11 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
           Give a feedback
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent
+        className="sm:max-w-[425px]"
+        role="form"
+        onSubmit={() => console.log("asd")}
+      >
         <DialogHeader>
           <DialogTitle>Send a Feedback</DialogTitle>
           <DialogDescription>
@@ -81,14 +70,14 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
             <Label htmlFor="name" className="text-right">
               Rating
             </Label>
-            {/* <Rating
+            <NewRating
               initialRating={formValue.rating}
               emptySymbol={<Star />}
               fullSymbol={<Star className="fill-black" />}
-              onChange={(value) =>
+              onChange={(value: number) =>
                 setFormValue((prev) => ({ ...prev, rating: value }))
               }
-            /> */}
+            />
           </div>
           <div className="flex flex-col items-start gap-2">
             <Label htmlFor="username" className="text-right">
@@ -103,7 +92,9 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button type="button" onClick={() => submitFeedback()}>
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
