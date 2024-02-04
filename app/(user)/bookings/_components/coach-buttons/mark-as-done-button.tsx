@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/tooltip"
 import { STATUS } from "@/types"
 import FeedbackButton from "../feedback-button"
+import { COLLECTION_MEETING } from "@/lib/collections"
 
 interface MarkAsDoneButtonProps {
   meeting_id: string
@@ -36,7 +37,7 @@ const MarkAsDoneButton: React.FC<MarkAsDoneButtonProps> = ({ meeting_id }) => {
 
   const onDone = async () => {
     try {
-      await updateDoc(doc(db, "meeting", meeting_id), {
+      await updateDoc(doc(db, COLLECTION_MEETING, meeting_id), {
         status: STATUS.DONE,
       })
       buttonElement.current?.click()

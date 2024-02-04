@@ -19,6 +19,7 @@ import { Rating } from "@smastrom/react-rating"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { DialogClose } from "@radix-ui/react-dialog"
+import { COLLECTION_MEETING } from "@/lib/collections"
 
 interface FeedbackButtonProps {
   meeting_id: string
@@ -38,7 +39,7 @@ const FeedbackButton: React.ForwardRefRenderFunction<
 
   const submitFeedback = async () => {
     try {
-      await updateDoc(doc(db, "meeting", meeting_id), {
+      await updateDoc(doc(db, COLLECTION_MEETING, meeting_id), {
         rating: formValue.rating,
         review: formValue.message,
       })

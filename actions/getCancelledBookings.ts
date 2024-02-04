@@ -17,6 +17,7 @@ import {
   convertUnixTimestampToISOString,
   filterUniqueUsers,
 } from "@/lib/utils"
+import { COLLECTION_MEETING } from "@/lib/collections"
 
 const getCancelledBookings = async (): Promise<Meeting[] | []> => {
   try {
@@ -30,7 +31,7 @@ const getCancelledBookings = async (): Promise<Meeting[] | []> => {
       user_role === ROLES.STUDENT ? "coach_id" : "user_id"
 
     const q = query(
-      collection(db, "meeting"),
+      collection(db, COLLECTION_MEETING),
       where("status", "==", STATUS.CANCELLED)
     )
 

@@ -22,6 +22,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { STATUS } from "@/types"
+import { useRef } from "react"
+import { COLLECTION_MEETING } from "@/lib/collections"
 
 interface CancelButtonProps {
   meeting_id: string
@@ -29,15 +31,19 @@ interface CancelButtonProps {
 
 const CancelButton: React.FC<CancelButtonProps> = ({ meeting_id }) => {
   const router = useRouter()
+  const buttonElement = useRef<HTMLButtonElement>(null)
 
   const onCancel = async () => {
     try {
-      await updateDoc(doc(db, "meetings", meeting_id), {
+      await updateDoc(doc(db, COLLECTION_MEETING, meeting_id), {
         status: STATUS.CANCELLED,
       })
+      buttonElement.current?.click()
+
       toast.success("Meeting Cancelled")
-      router.push("/user/bookings")
+      router.refresh()
     } catch (error) {
+      console.log(error)
       toast.error("Error cancelling meeting")
     }
   }
@@ -75,7 +81,9 @@ const CancelButton: React.FC<CancelButtonProps> = ({ meeting_id }) => {
 
           <DialogFooter>
             <DialogClose>
-              <Button variant="secondary">Cancel</Button>
+              <Button variant="secondary" ref={buttonElement}>
+                Cancel
+              </Button>
             </DialogClose>
             <Button onClick={() => onCancel()}>Yes</Button>
           </DialogFooter>

@@ -16,7 +16,7 @@ const LoginForm = () => {
   const router = useRouter()
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/book")
+      router.push("/bookings/upcoming")
     }
   }, [status, router])
 
@@ -45,7 +45,7 @@ const LoginForm = () => {
       if (callback?.error) toast.error(callback.error)
       if (callback?.ok && !callback?.error) {
         toast.success("Logged in")
-        router.push("/book")
+        router.push("/bookings/upcoming")
       }
     } catch (e) {
       toast.error("User not found")

@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { COLLECTION_MEETING } from "@/lib/collections"
 import { db } from "@/lib/firebase"
 import { combineDateAndTime } from "@/lib/utils"
 import { TimeSlot } from "@/types"
@@ -33,7 +34,7 @@ const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
 
   const submitBooking = async () => {
     try {
-      await addDoc(collection(db, "meeting"), {
+      await addDoc(collection(db, COLLECTION_MEETING), {
         coach_id: coach_id,
         user_id: data?.user.id,
         startTime: combineDateAndTime(date, time.startTime),

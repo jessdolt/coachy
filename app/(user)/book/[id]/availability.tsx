@@ -17,6 +17,7 @@ import toast from "react-hot-toast"
 import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { toDate } from "date-fns"
+import { COLLECTION_MEETING } from "@/lib/collections"
 
 interface AvailabilityProps {
   data: Availability
@@ -53,7 +54,7 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
 
       try {
         const q = query(
-          collection(db, "meeting"),
+          collection(db, COLLECTION_MEETING),
           where("date", ">=", toDate(selectedDate)),
           where("coach_id", "==", data.user_id)
         )

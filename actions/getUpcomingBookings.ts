@@ -12,6 +12,7 @@ import { db } from "@/lib/firebase"
 import { Meeting, ROLES, STATUS } from "@/types"
 import { toDate } from "date-fns"
 import { filterUniqueUsers, parseToTime } from "@/lib/utils"
+import { COLLECTION_MEETING } from "@/lib/collections"
 
 const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
   try {
@@ -25,7 +26,7 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
       user_role === ROLES.STUDENT ? "coach_id" : "user_id"
 
     const q = query(
-      collection(db, "meeting"),
+      collection(db, COLLECTION_MEETING),
       where(field, "==", currentUser.id),
       where("startTime", ">=", toDate(new Date())),
       where("status", "==", STATUS.PENDING)
@@ -68,6 +69,7 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
 
     return a as Meeting[]
   } catch (e) {
+    console.log(e)
     return []
   }
 }

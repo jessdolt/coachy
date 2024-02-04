@@ -17,6 +17,7 @@ import {
   convertUnixTimestampToISOString,
   filterUniqueUsers,
 } from "@/lib/utils"
+import { COLLECTION_MEETING } from "@/lib/collections"
 
 const getPastBookings = async (): Promise<Meeting[] | []> => {
   try {
@@ -30,7 +31,7 @@ const getPastBookings = async (): Promise<Meeting[] | []> => {
       user_role === ROLES.STUDENT ? "coach_id" : "user_id"
 
     const q = query(
-      collection(db, "meeting"),
+      collection(db, COLLECTION_MEETING),
       and(
         where(field, "==", currentUser.id),
         or(

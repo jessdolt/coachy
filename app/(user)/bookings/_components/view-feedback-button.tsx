@@ -27,12 +27,12 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
   rating,
   role,
 }) => {
-  const isStudent = role === ROLES.STUDENT
+  const isCoach = role === ROLES.COACH
 
-  const dialogTitle = isStudent ? "Submitted Feedback" : "Feedback"
-  const dialogSubTitle = isStudent
-    ? "This will help the coach to improve their service"
-    : "This will help you to improve your service"
+  const dialogTitle = isCoach ? "Submitted Feedback" : "Feedback"
+  const dialogSubTitle = isCoach
+    ? "This will help the student to improve their skills and knowledge"
+    : "This will help you to improve your skills and knowledge"
 
   return (
     <Dialog>
