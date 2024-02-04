@@ -1,19 +1,25 @@
 import React, { Fragment } from "react"
 import { Transition, Dialog } from "@headlessui/react"
-
 import useRoutes from "@/hooks/useRoutes"
 import { BiLogOut } from "react-icons/bi"
 import { signOut } from "next-auth/react"
 import { IoIosArrowBack } from "react-icons/io"
 import SidebarItem from "./sidebar-item"
 import { Button } from "@/components/ui/button"
+import { User } from "@/types"
+import { Avatar, AvatarImage } from "@/components/ui/avatar"
 
 interface SidebarDrawer {
   isOpen: boolean
   onClose: () => void
+  currentUser: User
 }
 
-const SidebarDrawer: React.FC<SidebarDrawer> = ({ isOpen, onClose }) => {
+const SidebarDrawer: React.FC<SidebarDrawer> = ({
+  isOpen,
+  onClose,
+  currentUser,
+}) => {
   const routes = useRoutes()
 
   return (
@@ -50,14 +56,38 @@ const SidebarDrawer: React.FC<SidebarDrawer> = ({ isOpen, onClose }) => {
                       <IoIosArrowBack size={32} onClick={onClose} />
                     </div>
                     <nav className="mt-6 flex flex-col justify-between">
-                      <ul role="list" className="flex flex-col space-y-1">
+                      <ul
+                        role="list"
+                        className="flex flex-col space-y-1"
+                        onClick={() => onClose()}
+                      >
                         {routes.map((route) => (
                           <SidebarItem {...route} key={route.path} />
                         ))}
                       </ul>
                     </nav>
 
-                    <nav className="text-white mt-auto">
+                    <nav className="mt-auto space-y-4">
+                      <div className="flex mt-auto items-center">
+                        <Avatar className="w-12 h-12 mr-2 cursor-pointer outline outline-1 outline-white/70 ">
+                          <AvatarImage
+                            className="object-cover"
+                            src={
+                              currentUser.profileUrl ||
+                              "/images/placeholder.jpg"
+                            }
+                          />
+                        </Avatar>
+                        <div className="flex flex-col">
+                          <h1 className="text-base font-bold leading-none capitalize ">
+                            {currentUser.fullName}
+                          </h1>
+                          <p className="text-sm text-gray-500 flex">
+                            {currentUser.role}
+                          </p>
+                        </div>
+                      </div>
+
                       <Button
                         className="flex items-center gap-2 w-full"
                         onClick={() => signOut({ callbackUrl: "/" })}

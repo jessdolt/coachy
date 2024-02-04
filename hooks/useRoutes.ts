@@ -32,7 +32,7 @@ const useRoutes = () => {
     },
   ].filter((route) => route.ROLES.find((role) => role === data?.user?.role))
 
-  return useMemo(() => routes, [pathname])
+  return useMemo(() => routes, [pathname, data])
 }
 
 export default useRoutes

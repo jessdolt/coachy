@@ -18,7 +18,7 @@ const Items: React.FC<ItemsProps> = ({ upcomings, pastBooking }) => {
       <div className="flex flex-col gap-4">
         {upcomings.map((upcoming) => (
           <Card
-            className="px-4 py-8 flex flex-col sm:flex-row items-center gap-4"
+            className="p-4 md:px-4 md:py-8 flex flex-col sm:flex-row items-center gap-4"
             key={upcoming.id}
           >
             <div className="w-full sm:w-[200px]">
@@ -37,11 +37,11 @@ const Items: React.FC<ItemsProps> = ({ upcomings, pastBooking }) => {
                     className="object-cover"
                   />
                 </Avatar>
-                <h2 className="text-lg font-semibold">
+                <h2 className="text-sm sm:text-base  font-semibold">
                   {upcoming?.otherUser?.fullName}
                 </h2>
               </div>
-              <div>
+              <div className="space-y-1">
                 <div className="flex text-sm items-center gap-2">
                   <Phone className="w-4 h-4 " />
                   <p>{upcoming?.otherUser?.phoneNumber}</p>

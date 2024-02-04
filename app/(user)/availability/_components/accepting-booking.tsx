@@ -11,13 +11,12 @@ interface AcceptingBookingProps {
 }
 
 const AcceptingBooking: React.FC<AcceptingBookingProps> = ({
-  currentUser,
   value,
   onChange,
 }) => {
   return (
     <div className="text-sm lg:text-base mt-4 flex gap-2 items-center font-semibold">
-      Accepting bookings:{" "}
+      Accepting bookings:
       <Switch checked={value} onCheckedChange={() => onChange(!value)} />
     </div>
   )
