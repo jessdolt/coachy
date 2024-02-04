@@ -15,28 +15,50 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { COLLECTION_USERS } from "@/lib/collections"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
 
 interface SetupFormProps {
   currentUser: User
 }
+
+const phoneRegex = new RegExp(
+  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
+)
 
 const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
 
-  // to resolve hydraion issue
+  const FormSchema = z.object({
+    firstName: z.string().min(2, {
+      message: "First name should be at least 2 characters long",
+    }),
+    lastName: z.string().min(2, {
+      message: "Last name should be at least 2 characters long",
+    }),
+    profileUrl: z.string().url({
+      message: "Please enter a valid URL",
+    }),
+    phoneNumber: z.string().regex(phoneRegex, {
+      message: "Please enter a valid phone number",
+    }),
+  })
+
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<FieldValues>({
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
       profileUrl: currentUser.profileUrl,
       firstName: currentUser.firstName,
@@ -45,9 +67,10 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
     },
   })
 
-  const profileUrl = watch("profileUrl")
+  const profileUrl = form.watch("profileUrl")
+  console.log(form.formState.errors)
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     setIsLoading(true)
 
     try {
@@ -59,7 +82,7 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
         phoneNumber: data.phoneNumber,
       })
 
-      router.push("/book")
+      // router.push("/book")
     } catch (error) {
       console.log(error)
       toast.error("Something went wrong")
@@ -69,7 +92,7 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
   }
 
   const handleUpload = (result: any) => {
-    setValue("profileUrl", result?.info?.secure_url, {
+    form.setValue("profileUrl", result?.info?.secure_url, {
       shouldValidate: true,
     })
   }
@@ -86,78 +109,108 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
           <p className="text-muted-foreground">Fill up your information</p>
         </div>
 
-        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="mt-2 flex flex-col gap-x-3">
-            <Label htmlFor="upload-img" className="mb-2 block">
-              Add your profile image
-            </Label>
-            <div className="mt-2 flex items-center gap-x-3">
-              <Avatar className="h-20 w-20">
-                <AvatarImage
-                  src={profileUrl || "/images/placeholder.jpg"}
-                  className="object-cover"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+        <Form {...form}>
+          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="mt-2 flex flex-col gap-x-3">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="!text-black">
+                      Add your profile image
+                    </FormLabel>
+                    <FormControl>
+                      <div className="mt-2 flex items-center gap-x-3">
+                        <Avatar className="h-20 w-20">
+                          <AvatarImage
+                            src={profileUrl || "/images/placeholder.jpg"}
+                            className="object-cover"
+                          />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
 
-              <CldUploadButton
-                options={{ maxFiles: 1 }}
-                onUpload={handleUpload}
-                uploadPreset="cnms8ohb"
-                className="self-end"
-              >
-                <Button disabled={isLoading} variant="outline" type="button">
-                  Upload
-                </Button>
-              </CldUploadButton>
+                        <CldUploadButton
+                          options={{ maxFiles: 1 }}
+                          onUpload={handleUpload}
+                          uploadPreset="cnms8ohb"
+                          className="self-end"
+                        >
+                          <Button
+                            disabled={isLoading}
+                            variant="outline"
+                            type="button"
+                          >
+                            Upload
+                          </Button>
+                        </CldUploadButton>
+                      </div>
+                    </FormControl>
+                    <FormDescription className="text-red-600">
+                      {form.formState.errors.profileUrl?.message}
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
             </div>
-          </div>
-          <div>
-            <Label htmlFor="firstName" className="mb-2 block">
-              First Name
-            </Label>
-
-            <Input
-              type="text"
-              id="firstName"
-              register={register}
-              errors={errors}
-              disabled={isLoading}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="lastName" className="mb-2 block">
-              Last Name
-            </Label>
-            <Input
-              type="text"
-              id="lastName"
-              register={register}
-              disabled={isLoading}
-              errors={errors}
-              required
-            />
-          </div>
-          <div>
-            <Label htmlFor="lastName" className="mb-2 block">
-              Phone Number
-            </Label>
-            <Input
-              type="text"
-              id="phoneNumber"
-              register={register}
-              disabled={isLoading}
-              errors={errors}
-              required
-            />
-          </div>
-          <div>
-            <Button disabled={isLoading} type="submit" className="w-full">
-              Finish
-            </Button>
-          </div>
-        </form>
+            <div>
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="!text-black">First Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="" {...field} />
+                    </FormControl>
+                    <FormDescription className="text-red-600">
+                      {form.formState.errors.firstName?.message}
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div>
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="!text-black">Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="" {...field} />
+                    </FormControl>
+                    <FormDescription className="text-red-600">
+                      {form.formState.errors.lastName?.message}
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div>
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="!text-black">Phone Number</FormLabel>
+                    <FormControl>
+                      <Input placeholder="" {...field} />
+                    </FormControl>
+                    <FormDescription className="text-red-600">
+                      {form.formState.errors.phoneNumber?.message}
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div>
+              <Button disabled={isLoading} type="submit" className="w-full">
+                Finish
+              </Button>
+            </div>
+          </form>
+        </Form>
       </div>
     </div>
   )

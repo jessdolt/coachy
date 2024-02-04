@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
 import { TimeSlot } from "@/types"
 import React from "react"
 import ConfirmBooking from "./confirm-booking"
@@ -23,26 +21,19 @@ const BookingForm: React.FC<BookingFormProps> = ({
   setSelectedTime,
   isLoading,
 }) => {
-  let mainContent
-  if (isLoading) {
-    mainContent = <BookingFormSkeleton />
-  } else {
-    mainContent = (
-      <>
-        <TimeSelector
-          times={times}
-          selectedTime={selectedTime}
-          setSelectedTime={setSelectedTime}
-        />
-      </>
-    )
-  }
-
   return (
     <>
       <div className="p-4 flex flex-col h-full">
         <h1 className="font-bold">Choose your time</h1>
-        {mainContent}
+        {isLoading ? (
+          <BookingFormSkeleton />
+        ) : (
+          <TimeSelector
+            times={times}
+            selectedTime={selectedTime}
+            setSelectedTime={setSelectedTime}
+          />
+        )}
         {selectedTime && (
           <ConfirmBooking
             time={selectedTime}

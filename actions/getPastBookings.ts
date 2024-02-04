@@ -50,12 +50,12 @@ const getPastBookings = async (): Promise<Meeting[] | []> => {
       date: toDate(upcoming.date.toDate()),
     }))
 
-    const otherUserArray = filterUniqueUsers(upcomingBookings, field).map(
-      async (booking: any) => {
-        const t = doc(db, "users", booking[field_other_user])
-        return await getDoc(t)
-      }
-    )
+    const uniqueUsers = filterUniqueUsers(upcomingBookings, field_other_user)
+
+    const otherUserArray = uniqueUsers.map(async (booking: any) => {
+      const t = doc(db, "users", booking[field_other_user])
+      return await getDoc(t)
+    })
 
     const responseOtherUser = await Promise.all(otherUserArray)
     const otherUsers = responseOtherUser.map((x) => x.data())

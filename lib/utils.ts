@@ -149,19 +149,18 @@ export function convertISOToTimeString(isoString: string) {
   return timeString
 }
 
-export function filterUniqueUsers(dataArray: any[], property: string) {
-  const uniqueUserIds = new Set()
+export function filterUniqueUsers(arr: any[], propertyName: string) {
+  const uniqueMap = new Map()
 
-  return dataArray.filter((obj) => {
-    // Check if the user_id is already in the Set
-    if (!uniqueUserIds.has(obj[property])) {
-      // If not, add it to the Set and include the object in the result
-      uniqueUserIds.add(obj[property])
-      return true
+  for (const obj of arr) {
+    const key = obj[propertyName]
+
+    if (!uniqueMap.has(key)) {
+      uniqueMap.set(key, obj)
     }
-    // If user_id is already in the Set, exclude the object from the result
-    return false
-  })
+  }
+
+  return Array.from(uniqueMap.values())
 }
 
 export function parseToTime(time: number) {
