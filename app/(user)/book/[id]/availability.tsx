@@ -8,6 +8,7 @@ import {
   convertISOToTimeString,
   convertUnixTimestampToISOString,
   getDatesForDaysInMonth,
+  getDatesForFirstWeekInMonth,
   parseMapDaysToArray,
 } from "@/lib/utils"
 import { Availability, TimeSlot } from "@/types"
@@ -38,10 +39,11 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
 
   const disabledDays = useMemo(
     () => [
+      ...getDatesForFirstWeekInMonth(disabledDayArray, newDate),
       ...getDatesForDaysInMonth(disabledDayArray, newDate),
       !newDate && new Date(),
     ],
-    [newDate]
+    [newDate, disabledDayArray]
   )
 
   useEffect(() => {

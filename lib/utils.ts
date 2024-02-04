@@ -82,30 +82,24 @@ export function getDatesForFirstWeekInMonth(
   dayIndices: any[],
   inputDate?: Date
 ) {
-  // Get the current date
   const currentDate = inputDate ? moment(inputDate) : moment()
 
-  // Get the current month
-  const currentMonth = currentDate.month()
+  // First day of the month
+  const firstDayOfMonth = moment(currentDate).startOf("month")
 
-  // Create an array to store the dates
-  const dates = []
+  // First week of the month given
+  const startOfWeek = firstDayOfMonth.startOf("week")
+
+  const dates: Date[] = []
 
   // Loop through each day index in the array
   for (const dayIndex of dayIndices) {
-    // Use Moment.js to get the first occurrence of the specified day in the current month
-    let dateObject = moment()
-      .month(currentMonth)
-      .date(1)
-      .day(dayIndex + 7)
+    // Calculate the date for the specified day index in the first week
+    const dateObject = startOfWeek.clone().day(dayIndex)
 
-    // Check if the date is in the first week
-    if (dateObject.week() === currentDate.week()) {
-      dates.push(dateObject.toDate())
-    }
+    dates.push(dateObject.toDate())
   }
 
-  // Return the array of dates in the first week
   return dates
 }
 

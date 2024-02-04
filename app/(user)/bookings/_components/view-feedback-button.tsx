@@ -55,6 +55,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
               initialRating={rating}
               emptySymbol={<Star />}
               fullSymbol={<Star className="fill-black" />}
+              readonly
             />
           </div>
           <div className="flex flex-col items-start gap-2">

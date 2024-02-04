@@ -17,7 +17,10 @@ const Items: React.FC<ItemsProps> = ({ upcomings, pastBooking }) => {
     <>
       <div className="flex flex-col gap-4">
         {upcomings.map((upcoming) => (
-          <Card className="px-4 py-8 flex flex-col sm:flex-row items-center gap-4">
+          <Card
+            className="px-4 py-8 flex flex-col sm:flex-row items-center gap-4"
+            key={upcoming.id}
+          >
             <div className="w-full sm:w-[200px]">
               <p className="font-medium">
                 {moment(upcoming.date).format("LL")}

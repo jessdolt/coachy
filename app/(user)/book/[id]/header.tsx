@@ -22,9 +22,9 @@ const Header: React.FC<HeaderProps> = ({ coach }) => {
 
         <div className="space-y-2">
           <h1 className="text-xl lg:text-3xl font-bold">{coach.fullName}</h1>
-          <p className="text-sm lg:text-base flex gap-2 items-center">
+          <div className="text-sm lg:text-base flex gap-2 items-center">
             Coached students: 13 <Users className="w-4 h-4" />
-          </p>
+          </div>
         </div>
       </div>
     </div>

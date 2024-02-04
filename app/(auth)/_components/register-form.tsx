@@ -30,7 +30,7 @@ const RegisterForm = () => {
     if (status === "authenticated") {
       router.push("/dashboard")
     }
-  }, [])
+  }, [status, router])
 
   const [isLoading, setIsLoading] = useState(false)
   const roles = [Roles.Coach, Roles.Student]

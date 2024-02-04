@@ -33,31 +33,30 @@ const MonthTab: React.FC<MonthTabProps> = ({ currentUser }) => {
 
   const debouncedSearchValue = useDebounce(searchValue, 300)
 
-  const fetchCoaches = async () => {
-    setIsLoading(true)
-    try {
-      const w = query(
-        collection(db, COLLECTION_USERS),
-        orderBy("fullName"),
-        startAt(searchValue),
-        limit(limitPage),
-        where("role", "==", Roles.Coach)
-      )
-
-      const querySnapshot2 = await getDocs(w)
-      const coaches = querySnapshot2.docs.map((doc) => doc.data())
-
-      setCoaches(coaches as User[])
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
   useEffect(() => {
+    const fetchCoaches = async () => {
+      setIsLoading(true)
+      try {
+        const w = query(
+          collection(db, COLLECTION_USERS),
+          orderBy("fullName"),
+          startAt(searchValue),
+          limit(limitPage),
+          where("role", "==", Roles.Coach)
+        )
+
+        const querySnapshot2 = await getDocs(w)
+        const coaches = querySnapshot2.docs.map((doc) => doc.data())
+
+        setCoaches(coaches as User[])
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
     fetchCoaches()
-  }, [limitPage, debouncedSearchValue])
+  }, [limitPage, debouncedSearchValue, searchValue])
 
   return (
     <div className="mt-4">

@@ -32,9 +32,6 @@ const Coaches: React.FC<coachesProps> = ({ data }) => {
               </p>
             </div>
           </CardHeader>
-          <CardDescription>
-            <CardContent>short description</CardContent>
-          </CardDescription>
 
           <CardFooter>
             <Button size={"sm"} asChild>
