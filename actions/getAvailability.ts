@@ -8,7 +8,7 @@ const getAvailability = async (user_id: string) => {
   try {
     const session = await getSession()
 
-    if (!session?.user) throw new Error("Unauthorized")
+    if (!session?.user) return null
 
     const q = doc(db, COLLECTION_AVAILABILITY, user_id)
     const docSnap = await getDoc(q)

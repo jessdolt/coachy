@@ -26,7 +26,7 @@ const RegisterForm = () => {
   }, [status, router])
 
   const [isLoading, setIsLoading] = useState(false)
-  const ROLES = [ROLES.COACH, ROLES.STUDENT]
+  const roles = [ROLES.COACH, ROLES.STUDENT]
 
   const {
     register,
@@ -36,7 +36,7 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      role: ROLES[0],
+      role: roles[0],
       email: "",
       password: "",
     },
@@ -87,7 +87,7 @@ const RegisterForm = () => {
                 setValue("role", value)
               }}
             >
-              {ROLES.map((role) => (
+              {roles.map((role) => (
                 <div className="flex items-center space-x-2" key={role}>
                   <RadioGroupItem value={role} id={role} />
                   <Label htmlFor={role}>{role}</Label>

@@ -5,9 +5,10 @@ import getCurrentUser from "@/actions/getCurrentUser"
 const SetupPage = async () => {
   const currentUser = await getCurrentUser()
 
+  if (!currentUser) return null
   return (
     <div>
-      <SetupForm currentUser={currentUser!} />
+      <SetupForm currentUser={currentUser} />
     </div>
   )
 }

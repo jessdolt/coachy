@@ -16,7 +16,7 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
   try {
     const currentUser = await getCurrentUser()
 
-    if (!currentUser) throw new Error("Unauthorized")
+    if (!currentUser) return []
 
     const user_role = currentUser.role
     const field = user_role === ROLES.STUDENT ? "user_id" : "coach_id"
