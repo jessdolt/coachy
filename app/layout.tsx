@@ -3,6 +3,7 @@ import { Noto_Sans } from "next/font/google"
 import "./globals.css"
 import AuthContext from "@/context/AuthContext"
 import ToasterContext from "@/context/ToasterContext"
+import "@smastrom/react-rating/style.css"
 
 const notoSans = Noto_Sans({ subsets: ["latin"] })
 

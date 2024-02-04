@@ -15,7 +15,7 @@ import { Send, Star } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import toast from "react-hot-toast"
-import NewRating from "./rating/rating"
+import { Rating } from "@smastrom/react-rating"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 
@@ -38,7 +38,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({ meeting_id }) => {
         review: formValue.message,
       })
 
-      toast.success("Booking confirmed")
+      toast.success("Review Submitted")
       router.refresh()
     } catch (e) {
       console.log(e)
@@ -49,7 +49,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({ meeting_id }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="w-[200px]">
           <Send className="w-4 h-4 mr-4" />
           Give a feedback
         </Button>
@@ -70,10 +70,9 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({ meeting_id }) => {
             <Label htmlFor="name" className="text-right">
               Rating
             </Label>
-            <NewRating
-              initialRating={formValue.rating}
-              emptySymbol={<Star />}
-              fullSymbol={<Star className="fill-black" />}
+            <Rating
+              value={formValue.rating}
+              className="max-w-[150px] focus-visible:border-none focus-visible:outline-none "
               onChange={(value: number) =>
                 setFormValue((prev) => ({ ...prev, rating: value }))
               }

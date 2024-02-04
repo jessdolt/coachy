@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Eye, Star } from "lucide-react"
-import NewRating from "./rating/rating"
+import { Rating } from "@smastrom/react-rating"
+
 import { ROLES } from "@/types"
 
 interface FeedbackButtonProps {
@@ -36,7 +37,7 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button className="w-[200px]">
           <Eye className="w-4 h-4 mr-4" />
           View Feedback
         </Button>
@@ -51,11 +52,10 @@ const FeedbackButton: React.FC<FeedbackButtonProps> = ({
             <Label htmlFor="name" className="text-right">
               Rating
             </Label>
-            <NewRating
-              initialRating={rating}
-              emptySymbol={<Star />}
-              fullSymbol={<Star className="fill-black" />}
-              readonly
+            <Rating
+              value={rating}
+              readOnly
+              className="max-w-[150px] focus-visible:border-none focus-visible:outline-none "
             />
           </div>
           <div className="flex flex-col items-start gap-2">
