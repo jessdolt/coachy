@@ -1,7 +1,5 @@
 import getCurrentUser from "@/actions/getCurrentUser"
 import getUpcomingBookings from "@/actions/getUpcomingBookings"
-import { Card } from "@/components/ui/card"
-import { Button } from "react-day-picker"
 import Items from "../_components/items"
 import NoItems from "../_components/no-items"
 

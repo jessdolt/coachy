@@ -45,6 +45,8 @@ const FeedbackButton: React.ForwardRefRenderFunction<
       })
 
       toast.success("Review Submitted")
+
+      // Click the button to close the dialog
       buttonElement.current?.click()
       router.refresh()
     } catch (e) {

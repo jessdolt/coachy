@@ -13,10 +13,9 @@ import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { COLLECTION_AVAILABILITY } from "@/lib/collections"
 import toast from "react-hot-toast"
-import { Card } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
 import { Loader2Icon } from "lucide-react"
 import AcceptingBooking from "./accepting-booking"
+import SkeletonForm from "./skeleton-form"
 
 export type FormValues = FieldValues & {
   days: {
@@ -44,11 +43,11 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
 
   const {
     control,
-    register,
     setValue,
     setError,
     watch,
     handleSubmit,
+    clearErrors,
     formState: { errors, isLoading },
   } = useForm<FormValues>({
     defaultValues: async () => {
@@ -58,8 +57,15 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
 
       if (!data) return defaultValues
 
+      // covert days map object to array
       const a = Object.entries(data.days)
+
+      // map the array to get the hours array
       const b = a.map((day: any) => day[1])
+
+      // map the hours array to get the isChecked and hours array
+      // isChecked is based on the length of the hours array,
+      // if hours array length === 0 then theres no working sched (timeslot) defined by the coach
       const c = b.map((day: any) => ({
         isChecked: day.length > 0,
         hours: day,
@@ -74,8 +80,14 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     setIsSaving(true)
+
     const { days } = data
+
+    // get the hours array of the days that are checked
+    // if the day is not checked, return an empty array, meaning theres no working sched (timeslot) defined by the coach
     const newData = days.map((day) => (day.isChecked ? day.hours : []))
+
+    // convert the array to map object for firestore
     const daysData = new Map(newData.map((day, index) => [index, day]))
 
     try {
@@ -92,12 +104,15 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
     }
   }
 
+  // Watch for changes in the timezone field
   const timezone = watch("timezone")
   const handleTimezoneOnChange = (value: string) => {
     setValue("timezone", value)
   }
 
+  // Watch for changes in the acceptingBooking field
   const acceptingBooking = watch("acceptingBooking")
+
   const handleAcceptingBooking = async (value: boolean) => {
     try {
       await updateDoc(doc(db, COLLECTION_AVAILABILITY, currentUser.id), {
@@ -110,33 +125,7 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
     }
   }
 
-  if (isLoading)
-    return (
-      <div className="mt-4 grid grid-cols-3 gap-x-8 gap-y-6">
-        <div className="col-span-3 lg:col-span-2">
-          <Card className="p-4 lg:p-8 flex-1">
-            <Skeleton className="w-40 h-12" />
-
-            <div className="space-y-4 mt-4">
-              {[...Array(7)].map((_, index) => (
-                <div className="flex gap-4" key={index}>
-                  <Skeleton className="w-20 h-12" />
-                  <Skeleton className="w-60 h-12" />
-                </div>
-              ))}
-            </div>
-          </Card>
-        </div>
-        <div className="col-span-3 lg:col-span-1 flex flex-col">
-          <Card className="p-4 lg:p-8">
-            <Skeleton className="w-40 h-12" />
-
-            <Skeleton className="w-80 h-12 mt-4" />
-          </Card>
-        </div>
-        <Skeleton className="h-12 w-20 mt-4" />
-      </div>
-    )
+  if (isLoading) return <SkeletonForm />
 
   return (
     <>
@@ -150,10 +139,10 @@ const AvailabilityForm: React.FC<AvailabilityFormProps> = ({ currentUser }) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mt-4 grid grid-cols-3 gap-x-8 gap-y-6 ">
             <Schedules
-              register={register}
               control={control}
               setError={setError}
               errors={errors}
+              clearErrors={clearErrors}
             />
             <TimezonePicker
               value={timezone}

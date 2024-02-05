@@ -14,8 +14,6 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = async ({
 
   if (!currentUser) return null
 
-  console.log(currentUser)
-
   // if (
   //   !currentUser.profileUrl ||
   //   !currentUser.firstName ||

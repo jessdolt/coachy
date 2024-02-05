@@ -5,6 +5,7 @@ import moment from "moment"
 import {
   Control,
   FieldErrors,
+  UseFormClearErrors,
   UseFormRegister,
   UseFormSetError,
   UseFormStateProps,
@@ -14,17 +15,17 @@ import { FormValues } from "./availability-form"
 import TimeSlots from "./timeslot"
 
 interface SchedulesProps {
-  register: UseFormRegister<FormValues>
   control: Control<FormValues>
   setError: UseFormSetError<FormValues>
   errors: FieldErrors<FormValues>
+  clearErrors: UseFormClearErrors<FormValues>
 }
 
 const Schedules: React.FC<SchedulesProps> = ({
-  register,
   control,
   setError,
   errors,
+  clearErrors,
 }) => {
   const { fields, update } = useFieldArray({
     control,
@@ -32,6 +33,9 @@ const Schedules: React.FC<SchedulesProps> = ({
   })
 
   const handleSwitchChange = (index: number, day: any) => {
+    // update the isChecked field
+    // and add the default time slot
+
     const newFields = {
       ...day,
       isChecked: !day.isChecked,
@@ -67,6 +71,7 @@ const Schedules: React.FC<SchedulesProps> = ({
                   arrayIndex={index}
                   setError={setError}
                   errors={errors}
+                  clearErrors={clearErrors}
                 />
               )}
             </div>

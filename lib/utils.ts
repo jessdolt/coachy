@@ -8,6 +8,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+/**
+ * Generates an array of time slots at 30-minute intervals from 12:00 AM to 11:30 PM.
+ * @returns An array of formatted time strings.
+ */
 export const generateTimeList = () => {
   const hoursArray = []
   const startTime = moment("12:00 AM", "h:mm A")
@@ -23,6 +27,11 @@ export const generateTimeList = () => {
   return hoursArray
 }
 
+/**
+ * Adds two hours to the input time and returns the formatted result.
+ * @param inputTime - The input time in "h:mm A" format.
+ * @returns The formatted time after adding two hours.
+ */
 export const addTwoHours = (inputTime: string) => {
   const parsedTime = moment(inputTime, "h:mm A")
   const resultTime = parsedTime.add(2, "hours")
@@ -31,7 +40,13 @@ export const addTwoHours = (inputTime: string) => {
   return formattedResultTime
 }
 
-function isTimeWithinRange(time: string, range: TimeSlot): boolean {
+/**
+ * Checks if a given time is within a specified time range.
+ * @param time - The time to check.
+ * @param range - The time range (start and end time) to compare against.
+ * @returns True if the time is within the range, false otherwise.
+ */
+export function isTimeWithinRange(time: string, range: TimeSlot): boolean {
   const rangeStartTime = moment(range.startTime, TIME_FORMAT)
   const rangeEndTime = moment(range.endTime, TIME_FORMAT)
   const checkTime = moment(time, TIME_FORMAT)
@@ -39,6 +54,12 @@ function isTimeWithinRange(time: string, range: TimeSlot): boolean {
   return checkTime.isBetween(rangeStartTime, rangeEndTime, null, "()")
 }
 
+/**
+ * Finds the overlapping time slot for a given time within a list of time slots.
+ * @param data - An array of time slots.
+ * @param time - The time to check for overlap.
+ * @returns The overlapping time slot or undefined if no overlap is found.
+ */
 export function getTimeOverlap(
   data: TimeSlot[],
   time: string
@@ -46,6 +67,12 @@ export function getTimeOverlap(
   return data.find((item) => isTimeWithinRange(time, item))
 }
 
+/**
+ * Generates an array of dates for specified day indices in the current month.
+ * @param dayIndices - An array of day indices.
+ * @param inputDate - Optional: The base date for calculations.
+ * @returns An array of date objects.
+ */
 export function getDatesForDaysInMonth(dayIndices: any[], inputDate?: Date) {
   // Get the current date
   const currentDate = inputDate ? moment(inputDate) : moment()
@@ -78,6 +105,12 @@ export function getDatesForDaysInMonth(dayIndices: any[], inputDate?: Date) {
   return dates
 }
 
+/**
+ * Generates an array of dates for specified day indices in the first week of the month.
+ * @param dayIndices - An array of day indices.
+ * @param inputDate - Optional: The base date for calculations.
+ * @returns An array of date objects.
+ */
 export function getDatesForFirstWeekInMonth(
   dayIndices: any[],
   inputDate?: Date
@@ -107,6 +140,13 @@ export const parseMapDaysToArray = (map: Availability) => {
   return Object.entries(map.days).map((day) => day[1])
 }
 
+/**
+ * Combines a date object and a time string into a single Date object.
+ * @param dateObject - The date object.
+ * @param timeString - The time string in "h:mm A" format.
+ * @returns A combined Date object.
+ * @throws Error if dateObject is not a valid Date or timeString has an invalid format.
+ */
 export function combineDateAndTime(dateObject: Date, timeString: string) {
   if (!(dateObject instanceof Date) || isNaN(dateObject.getTime())) {
     throw new Error("Invalid Date object")
@@ -129,6 +169,11 @@ export function combineDateAndTime(dateObject: Date, timeString: string) {
   return new Date(isoString)
 }
 
+/**
+ * Converts a Unix timestamp to an ISO string.
+ * @param unixTimestamp - The Unix timestamp.
+ * @returns The ISO string representation of the Unix timestamp.
+ */
 export function convertUnixTimestampToISOString(unixTimestamp: any) {
   const isoString = moment.unix(unixTimestamp).toISOString()
   return isoString
@@ -149,6 +194,12 @@ export function convertISOToTimeString(isoString: string) {
   return timeString
 }
 
+/**
+ * Filters an array of objects based on a unique property.
+ * @param arr - The array to filter.
+ * @param propertyName - The property name to determine uniqueness.
+ * @returns An array of unique objects based on the specified property.
+ */
 export function filterUniqueUsers(arr: any[], propertyName: string) {
   const uniqueMap = new Map()
 
@@ -163,6 +214,12 @@ export function filterUniqueUsers(arr: any[], propertyName: string) {
   return Array.from(uniqueMap.values())
 }
 
+/**
+ * Parses a Unix timestamp and converts it to a formatted time string.
+ * @param time - The Unix timestamp.
+ * @returns A formatted time string.
+ * @throws Error if the input time is not a valid Unix timestamp.
+ */
 export function parseToTime(time: number) {
   return convertISOToTimeString(convertUnixTimestampToISOString(time))
 }

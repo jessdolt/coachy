@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Check } from "lucide-react"
-import { useRouter } from "next/navigation"
 import { useRef } from "react"
 import toast from "react-hot-toast"
 import { doc, updateDoc } from "firebase/firestore"
@@ -31,7 +30,6 @@ interface MarkAsDoneButtonProps {
 }
 
 const MarkAsDoneButton: React.FC<MarkAsDoneButtonProps> = ({ meeting_id }) => {
-  const router = useRouter()
   const buttonElement = useRef<HTMLButtonElement>(null)
   const buttonFeedbackElement = useRef<HTMLButtonElement>(null)
 
@@ -40,7 +38,10 @@ const MarkAsDoneButton: React.FC<MarkAsDoneButtonProps> = ({ meeting_id }) => {
       await updateDoc(doc(db, COLLECTION_MEETING, meeting_id), {
         status: STATUS.DONE,
       })
+
+      // click the hidden button to close the dialog
       buttonElement.current?.click()
+      // click the hidden button to open the feedback dialog
       buttonFeedbackElement.current?.click()
       toast.success("Meeting marked as done")
     } catch (error) {

@@ -38,12 +38,13 @@ const CancelButton: React.FC<CancelButtonProps> = ({ meeting_id }) => {
       await updateDoc(doc(db, COLLECTION_MEETING, meeting_id), {
         status: STATUS.CANCELLED,
       })
+
+      // click the hidden button to close the dialog
       buttonElement.current?.click()
 
       toast.success("Meeting Cancelled")
       router.refresh()
     } catch (error) {
-      console.log(error)
       toast.error("Error cancelling meeting")
     }
   }

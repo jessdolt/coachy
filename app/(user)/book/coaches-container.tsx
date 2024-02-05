@@ -7,7 +7,6 @@ import { ROLES, User } from "@/types"
 import {
   collection,
   getDocs,
-  limit,
   orderBy,
   query,
   startAt,
@@ -23,13 +22,10 @@ interface CoachesContainerProps {
   currentUser: User
 }
 
-const nextPage = 6
-
 const CoachesContainer: React.FC<CoachesContainerProps> = ({ currentUser }) => {
   const [coaches, setCoaches] = useState<User[]>([])
   const [searchValue, setSearchValue] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const [limitPage, setLimitPage] = useState(6)
   const debouncedSearchValue = useDebounce(searchValue, 300)
 
   useEffect(() => {
@@ -40,7 +36,6 @@ const CoachesContainer: React.FC<CoachesContainerProps> = ({ currentUser }) => {
           collection(db, COLLECTION_USERS),
           orderBy("fullName"),
           startAt(searchValue),
-          limit(limitPage),
           where("role", "==", ROLES.COACH)
         )
 
@@ -54,7 +49,7 @@ const CoachesContainer: React.FC<CoachesContainerProps> = ({ currentUser }) => {
       }
     }
     fetchCoaches()
-  }, [limitPage, debouncedSearchValue])
+  }, [debouncedSearchValue])
 
   return (
     <div className="mt-4">
@@ -78,17 +73,6 @@ const CoachesContainer: React.FC<CoachesContainerProps> = ({ currentUser }) => {
       </div>
 
       {isLoading ? <SkeletonLoader /> : <Coaches data={coaches} />}
-
-      {/* <div className="flex justify-center mt-4 py-4">
-        <Button
-          onClick={() => setLimitPage((prevLimit) => prevLimit + nextPage)}
-          size="lg"
-          className="w-full max-w-[450px]"
-          disabled={isLoading}
-        >
-          Load more
-        </Button>
-      </div> */}
     </div>
   )
 }

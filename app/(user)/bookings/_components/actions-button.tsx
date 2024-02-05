@@ -15,9 +15,13 @@ const ActionsButton: React.FC<ActionsButton> = async ({ data }) => {
   if (!currentUser) return null
 
   const userRole = currentUser.role
+
+  // check if the coach has given feedback
   const hasFeedback = !!data.review && !!data.rating
 
   const canGiveFeedback = userRole === ROLES.COACH && !hasFeedback
+
+  // check if the student can view feedback, stored in another variable for reading purposes
   const canViewFeedback = hasFeedback
   const noFeedbackYet = userRole === ROLES.STUDENT && !hasFeedback
 

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { signIn, useSession } from "next-auth/react"
 import Link from "next/link"
-import { useForm, FieldValues, SubmitHandler, set } from "react-hook-form"
+import { useForm, FieldValues, SubmitHandler } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { useRouter } from "next/navigation"
 

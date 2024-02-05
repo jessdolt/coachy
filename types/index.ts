@@ -20,6 +20,7 @@ export interface Route {
 
 export interface TimeSlot {
   startTime: string
+  id?: string
   endTime: string
 }
 

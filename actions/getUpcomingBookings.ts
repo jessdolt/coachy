@@ -1,6 +1,5 @@
 import getCurrentUser from "./getCurrentUser"
 import {
-  and,
   collection,
   doc,
   getDoc,
@@ -21,10 +20,15 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
     if (!currentUser) return []
 
     const user_role = currentUser.role
+
+    // the field to query on meeting collections depends on the user role
     const field = user_role === ROLES.STUDENT ? "user_id" : "coach_id"
+
+    // the field to query on getting the other user
     const field_other_user =
       user_role === ROLES.STUDENT ? "coach_id" : "user_id"
 
+    // get all upcoming meetings
     const q = query(
       collection(db, COLLECTION_MEETING),
       where(field, "==", currentUser.id),
@@ -34,11 +38,13 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
 
     const querySnapshot = await getDocs(q)
 
+    // map the result to an array of meetings and included the meeting id
     const result = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     })) as any[]
 
+    // parse the date and time to a readable, format unix timestamp to ISO string to time string
     const upcomingBookings = result.map((upcoming) => ({
       ...upcoming,
       startTime: parseToTime(upcoming.startTime.seconds),
@@ -46,17 +52,22 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
       date: toDate(upcoming.date.toDate()),
     }))
 
+    // get the unique users based on the field_other_user
     const uniqueUsers = filterUniqueUsers(upcomingBookings, field_other_user)
 
+    // get the other user details
     const otherUserArray = uniqueUsers.map(async (booking: any) => {
-      const t = doc(db, "users", booking[field_other_user])
-      return await getDoc(t)
+      const a = doc(db, "users", booking[field_other_user])
+      return await getDoc(a)
     })
 
     const responseOtherUser = await Promise.all(otherUserArray)
+
+    // map the response to an array of users
     const otherUsers = responseOtherUser.map((x) => x.data())
 
-    const a = upcomingBookings.map((booking: any) => {
+    // combine the other user to the upcoming bookings
+    const data = upcomingBookings.map((booking: any) => {
       const otherUser = otherUsers.find(
         (user: any) => user.id === booking[field_other_user]
       )
@@ -67,9 +78,8 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
       }
     })
 
-    return a as Meeting[]
+    return data as Meeting[]
   } catch (e) {
-    console.log(e)
     return []
   }
 }
