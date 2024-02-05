@@ -1,8 +1,6 @@
 "use client"
 import { Switch } from "@/components/ui/switch"
-import { collection, doc, getDocs, query, where } from "firebase/firestore"
 import { User } from "next-auth"
-import React, { useEffect } from "react"
 
 interface AcceptingBookingProps {
   currentUser: User

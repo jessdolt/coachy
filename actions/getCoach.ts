@@ -1,11 +1,4 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore"
+import { doc, getDoc } from "firebase/firestore"
 import getSession from "./getSession"
 import { db } from "@/lib/firebase"
 import { COLLECTION_USERS } from "@/lib/collections"

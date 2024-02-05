@@ -1,4 +1,3 @@
-import React, { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Switch } from "@/components/ui/switch"
 import moment from "moment"
@@ -6,9 +5,7 @@ import {
   Control,
   FieldErrors,
   UseFormClearErrors,
-  UseFormRegister,
   UseFormSetError,
-  UseFormStateProps,
   useFieldArray,
 } from "react-hook-form"
 import { FormValues } from "./availability-form"

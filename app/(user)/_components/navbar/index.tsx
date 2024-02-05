@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { User } from "@/types"
 import { Button } from "@/components/ui/button"
-import { Menu, User as UserIcon } from "lucide-react"
+import { Menu } from "lucide-react"
 import SidebarDrawer from "../sidebar/sidebar-drawer"
 
 interface NavbarProps {
