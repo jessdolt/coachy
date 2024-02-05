@@ -51,8 +51,9 @@ $ npm run start
 
 #### For Coaches
 1. Availability Management
-   Coaches can effortlessly set their 2-hour availability slots using an intuitive day setter. This feature allows them to customize their schedule for each day of the week, providing flexibility and control.
-2. Feedback System
+   
+Coaches can effortlessly set their 2-hour availability slots using an intuitive day setter. This feature allows them to customize their schedule for each day of the week, providing flexibility and control.
+3. Feedback System
    After each coaching session, coaches have the option to provide valuable feedback and rating on their students. This feature promotes constructive communication and continuous improvement.
 
 #### For Student
