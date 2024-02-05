@@ -53,7 +53,11 @@ const SidebarDrawer: React.FC<SidebarDrawer> = ({
                     <div className="h-20  -mt-2 flex justify-between items-center">
                       <h1 className="text-3xl font-bold">Coachy</h1>
 
-                      <IoIosArrowBack size={32} onClick={onClose} />
+                      <IoIosArrowBack
+                        size={32}
+                        onClick={onClose}
+                        className="cursor-pointer"
+                      />
                     </div>
                     <nav className="mt-6 flex flex-col justify-between">
                       <ul

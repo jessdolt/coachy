@@ -6,6 +6,7 @@ import {
   getDoc,
   getDocs,
   or,
+  orderBy,
   query,
   where,
 } from "firebase/firestore"
@@ -39,7 +40,8 @@ const getPastBookings = async (): Promise<Meeting[] | []> => {
           where("status", "==", STATUS.DONE),
           where("endTime", "<", toDate(new Date()))
         )
-      )
+      ),
+      orderBy("endTime", "desc")
     )
 
     const querySnapshot = await getDocs(q)
@@ -84,6 +86,7 @@ const getPastBookings = async (): Promise<Meeting[] | []> => {
 
     return data as Meeting[]
   } catch (e) {
+    console.log(e)
     return []
   }
 }

@@ -18,6 +18,7 @@ import { collection, getDocs, query, where } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import { toDate } from "date-fns"
 import { COLLECTION_MEETING } from "@/lib/collections"
+import FullyBooked from "./fully-booked"
 
 interface AvailabilityProps {
   data: Availability
@@ -28,6 +29,7 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
   const [newDate, setNewDate] = useState<Date | undefined>()
   const [selectedTime, setSelectedTime] = useState<TimeSlot | undefined>()
   const [times, setTimes] = useState<TimeSlot[]>([])
+  const [isFullyBooked, setIsFullyBooked] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
   const workingSched = parseMapDaysToArray(data)
@@ -48,11 +50,11 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
   useEffect(() => {
     const fetchAvailableTime = async () => {
       if (!selectedDate) return
-
       setIsLoading(true)
       const day = moment(selectedDate).day()
 
       try {
+        // get all the  meetings for the selected date
         const q = query(
           collection(db, COLLECTION_MEETING),
           where("date", ">=", toDate(selectedDate)),
@@ -62,15 +64,33 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
         const querySnapshot = await getDocs(q)
         const result = querySnapshot.docs.map((doc) => doc.data())
 
+        // get all the time for the selected date
         const time = result
           .map((u) => convertUnixTimestampToISOString(u.startTime.seconds))
           .map((r) => convertISOToTimeString(r))
 
+        // filter the available time for the selected date
         const availableTime = workingSched[day].filter((schedule) => {
           return !time.includes(schedule.startTime)
         })
 
-        setTimes(availableTime.length === 0 ? workingSched[day] : availableTime)
+        // check if the selected date is fully booked
+        // result is the meetings for the selected date (occupied slots)
+        // availableTime is the available slots for the selected date
+        // if result is greater than 0 and availableTime is 0, then the date is fully booked
+        const isFullyBooked = result.length > 0 && availableTime.length === 0
+
+        if (isFullyBooked) setIsFullyBooked(true)
+        else setIsFullyBooked(false)
+
+        // set the available time for the selected date
+        setTimes(
+          availableTime.length === 0
+            ? !isFullyBooked
+              ? workingSched[day]
+              : availableTime
+            : availableTime
+        )
       } catch (e) {
         toast.error("Something went wrong")
       } finally {
@@ -114,9 +134,9 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
         />
 
         <div className="flex-1">
-          {!selectedDate ? (
-            <NoDate />
-          ) : (
+          {isFullyBooked && <FullyBooked />}
+          {!isFullyBooked && !selectedDate && <NoDate />}
+          {!isFullyBooked && selectedDate && (
             <BookingForm
               isLoading={isLoading}
               times={times}

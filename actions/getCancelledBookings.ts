@@ -4,6 +4,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   where,
 } from "firebase/firestore"
@@ -32,7 +33,8 @@ const getCancelledBookings = async (): Promise<Meeting[] | []> => {
     const q = query(
       collection(db, COLLECTION_MEETING),
       where("status", "==", STATUS.CANCELLED),
-      where(field, "==", currentUser.id)
+      where(field, "==", currentUser.id),
+      orderBy("endTime", "desc")
     )
 
     const querySnapshot = await getDocs(q)
@@ -78,6 +80,7 @@ const getCancelledBookings = async (): Promise<Meeting[] | []> => {
 
     return data as Meeting[]
   } catch (e) {
+    console.log(e)
     return []
   }
 }

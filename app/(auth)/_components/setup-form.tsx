@@ -22,6 +22,8 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form"
+import { useSession } from "next-auth/react"
+import { DEFAULT_AUTH_PAGE } from "@/lib/constants"
 
 interface SetupFormProps {
   currentUser: User
@@ -33,6 +35,18 @@ const phoneRegex = new RegExp(
 
 const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
   const router = useRouter()
+  const session = useSession()
+
+  useEffect(() => {
+    if (session.status === "authenticated" && session.data?.user?.profileUrl) {
+      router.push(DEFAULT_AUTH_PAGE)
+    }
+
+    if (session.status !== "authenticated") {
+      router.push("/")
+    }
+  }, [session])
+
   const [isLoading, setIsLoading] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
 
@@ -79,7 +93,7 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
         phoneNumber: data.phoneNumber,
       })
 
-      router.push("/bookings/upcoming")
+      router.push(DEFAULT_AUTH_PAGE)
     } catch (error) {
       toast.error("Something went wrong")
     } finally {

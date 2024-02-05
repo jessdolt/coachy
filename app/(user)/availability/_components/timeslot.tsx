@@ -11,7 +11,7 @@ import {
 } from "react-hook-form"
 import { FormValues } from "./availability-form"
 import { TimeSlot } from "@/types"
-import { addTwoHours, getTimeOverlap, isTimeWithinRange } from "@/lib/utils"
+import { addTwoHours, cn, getTimeOverlap, isTimeWithinRange } from "@/lib/utils"
 import moment from "moment"
 
 interface TimeSlotsProps {
@@ -136,7 +136,7 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({
               />
             </div>
             {errors?.days?.[arrayIndex]?.hours?.[index]?.startTime && (
-              <p className="text-xs text-red-600">
+              <p className="text-[11px] text-red-600">
                 This schedule overlaps with another schedule
               </p>
             )}
@@ -147,8 +147,12 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({
               size="icon"
               type="button"
               onClick={() => handleInsertNewTimeSlot()}
+              className={cn(
+                errors?.days?.[arrayIndex]?.hours?.[index]?.startTime,
+                "self-start"
+              )}
             >
-              <Plus className="w-3 h-3 lg:h-4 lg:w-4" />
+              <Plus className="w-3 h-3 lg:h-4 lg:w-4 align-start" />
             </Button>
           ) : (
             <Button
@@ -156,6 +160,10 @@ const TimeSlots: React.FC<TimeSlotsProps> = ({
               size="icon"
               type="button"
               onClick={() => remove(index)}
+              className={cn(
+                errors?.days?.[arrayIndex]?.hours?.[index]?.startTime,
+                "self-start"
+              )}
             >
               <Trash className="w-3 h-3 lg:h-4 lg:w-4" />
             </Button>

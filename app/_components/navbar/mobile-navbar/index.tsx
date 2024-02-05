@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react"
 
 import Logo from "../logo"
 import { Button } from "@/components/ui/button"
+import { DEFAULT_AUTH_PAGE } from "@/lib/constants"
 
 const MobileNavbar = () => {
   const { status } = useSession()
@@ -18,7 +19,7 @@ const MobileNavbar = () => {
           <Button>Start now</Button>
         </Link>
       ) : (
-        <Link href="/bookings/upcoming">
+        <Link href={DEFAULT_AUTH_PAGE}>
           <Button>Account</Button>
         </Link>
       )}

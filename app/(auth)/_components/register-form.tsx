@@ -13,6 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import BackButton from "./back-button"
 import { ROLES } from "@/types"
+import { DEFAULT_AUTH_PAGE } from "@/lib/constants"
 
 const RegisterForm = () => {
   const { status } = useSession()
@@ -21,7 +22,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/bookings/upcoming")
+      router.push(DEFAULT_AUTH_PAGE)
     }
   }, [status, router])
 

@@ -9,9 +9,7 @@ const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
   return (
     <div className="relative h-screen">
       <Navbar />
-      <main className="pt-24 h-full">
-        <section className="px-4 max-w-7xl mx-auto h-full">{children}</section>
-      </main>
+      <main className="pt-[70px] h-full relative">{children}</main>
     </div>
   )
 }

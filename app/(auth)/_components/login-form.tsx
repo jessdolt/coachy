@@ -10,13 +10,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import BackButton from "./back-button"
+import { DEFAULT_AUTH_PAGE } from "@/lib/constants"
 
 const LoginForm = () => {
   const { status } = useSession()
   const router = useRouter()
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/bookings/upcoming")
+      router.push(DEFAULT_AUTH_PAGE)
     }
   }, [status, router])
 
@@ -45,7 +46,7 @@ const LoginForm = () => {
       if (callback?.error) toast.error(callback.error)
       if (callback?.ok && !callback?.error) {
         toast.success("Logged in")
-        router.push("/bookings/upcoming")
+        router.push(DEFAULT_AUTH_PAGE)
       }
     } catch (e) {
       toast.error("User not found")

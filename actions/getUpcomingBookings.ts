@@ -80,6 +80,8 @@ const getUpcomingBookings = async (): Promise<Meeting[] | []> => {
 
     return data as Meeting[]
   } catch (e) {
+    console.log(e)
+
     return []
   }
 }
