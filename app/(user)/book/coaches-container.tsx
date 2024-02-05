@@ -49,6 +49,9 @@ const CoachesContainer: React.FC<CoachesContainerProps> = ({ currentUser }) => {
       }
     }
     fetchCoaches()
+
+    // disabled because we don't want to refetch the data on every search value change but only when the debounced value changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearchValue])
 
   return (

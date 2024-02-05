@@ -79,6 +79,9 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
     }
 
     fetchAvailableTime()
+
+    // disabled because we only want to run this when the selectedDate changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate])
 
   return (
