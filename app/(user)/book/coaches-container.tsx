@@ -56,7 +56,6 @@ const CoachesContainer: React.FC<CoachesContainerProps> = ({ currentUser }) => {
 
         setCoaches(coaches as User[])
       } catch (error) {
-        console.log(error)
         toast.error("Failed to fetch coaches")
       } finally {
         setIsLoading(false)
