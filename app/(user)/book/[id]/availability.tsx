@@ -70,9 +70,11 @@ const Availability: React.FC<AvailabilityProps> = ({ data }) => {
           .map((r) => convertISOToTimeString(r))
 
         // filter the available time for the selected date
-        const availableTime = workingSched[day].filter((schedule) => {
-          return !time.includes(schedule.startTime)
-        })
+        const availableTime = workingSched[day]
+          .filter((schedule) => {
+            return !time.includes(schedule.startTime)
+          })
+          .sort((a, b) => b.startTime.localeCompare(a.startTime))
 
         // check if the selected date is fully booked
         // result is the meetings for the selected date (occupied slots)

@@ -6,6 +6,7 @@ import { db } from "@/lib/firebase"
 import { ROLES, User } from "@/types"
 import {
   collection,
+  endAt,
   getDocs,
   orderBy,
   query,
@@ -17,6 +18,8 @@ import { useEffect, useState } from "react"
 import { useDebounce } from "@/hooks/useDebounce"
 import Coaches from "./coaches"
 import SkeletonLoader from "./skeleton-loader"
+import toast from "react-hot-toast"
+import { capitalizeFirstLetter } from "@/lib/utils"
 
 interface CoachesContainerProps {
   currentUser: User
@@ -32,10 +35,19 @@ const CoachesContainer: React.FC<CoachesContainerProps> = ({ currentUser }) => {
     const fetchCoaches = async () => {
       setIsLoading(true)
       try {
+        // added this logic as I don't know how like search query works in firestore
+        // nor do I know how to turn of the case senstivity for the search query
+
+        const newSearchValue = capitalizeFirstLetter(searchValue)
+
+        // query for coaches
+        // we use the startAt and endAt methods to perform a "like" search
+        // we also use the \uf8ff character to indicate the end of the search value
         const w = query(
           collection(db, COLLECTION_USERS),
           orderBy("fullName"),
-          startAt(searchValue),
+          startAt(newSearchValue),
+          endAt(newSearchValue + "\uf8ff"),
           where("role", "==", ROLES.COACH)
         )
 
@@ -44,6 +56,8 @@ const CoachesContainer: React.FC<CoachesContainerProps> = ({ currentUser }) => {
 
         setCoaches(coaches as User[])
       } catch (error) {
+        console.log(error)
+        toast.error("Failed to fetch coaches")
       } finally {
         setIsLoading(false)
       }

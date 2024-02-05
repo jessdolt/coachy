@@ -223,3 +223,11 @@ export function filterUniqueUsers(arr: any[], propertyName: string) {
 export function parseToTime(time: number) {
   return convertISOToTimeString(convertUnixTimestampToISOString(time))
 }
+
+export function capitalizeFirstLetter(inputString: string) {
+  if (!inputString) {
+    return inputString
+  } else {
+    return inputString.charAt(0).toUpperCase() + inputString.slice(1)
+  }
+}

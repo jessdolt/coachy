@@ -45,7 +45,7 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
     if (session.status !== "authenticated") {
       router.push("/")
     }
-  }, [session])
+  }, [session, router])
 
   const [isLoading, setIsLoading] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
