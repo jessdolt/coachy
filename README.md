@@ -52,27 +52,31 @@ $ npm run start
 #### For Coaches
 1. Availability Management
    
-Coaches can effortlessly set their 2-hour availability slots using an intuitive day setter. This feature allows them to customize their schedule for each day of the week, providing flexibility and control.
+   Coaches can effortlessly set their 2-hour availability slots using an intuitive day setter. This feature allows them to customize their schedule for each day of the week, providing flexibility and control.
 3. Feedback System
+
    After each coaching session, coaches have the option to provide valuable feedback and rating on their students. This feature promotes constructive communication and continuous improvement.
 
 #### For Student
 1. Booking System
+
    Students have the convenience of booking coaching sessions directly through the app. This streamlined process simplifies scheduling and ensures a hassle-free experience for students seeking guidance.
 
 #### Both 
 1. Booking Overview
+
    Coaches and students can easily view their upcoming, done, and cancelled bookings, providing a comprehensive overview of their coaching sessions.
 
   
   
 ### Added features
 - Normal authentication using NextAuth 
-- Ability to mark as done for upcoming bookings (Coach) 
+- Ability to mark as done for upcoming bookings (Coach)
+  
 `This is for testing purposes only. The main logic of the app is, it will consider a booking done once endTime > current Datetime`
 - Ability to cancel upcoming bookings
 - Cancelled bookings filter
-- 
+  
 ### Limitations
 - Authentication form `/login` and `/signup` dont't have front and backend validation
 - Fully booked dates are not disabled on the calendar. It will only shows "fully booked" message
