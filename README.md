@@ -46,25 +46,22 @@ Start the server
 $ npm run start
 ```
 
-
-
-
 ## Main Features and Limitations
 
 
 #### For Coaches
 1. Availability Management
-  - Coaches can effortlessly set their 2-hour availability slots using an intuitive day setter. This feature allows them to customize their schedule for each day of the week, providing flexibility and control.
+   Coaches can effortlessly set their 2-hour availability slots using an intuitive day setter. This feature allows them to customize their schedule for each day of the week, providing flexibility and control.
 2. Feedback System
-  - After each coaching session, coaches have the option to provide valuable feedback and rating on their students. This feature promotes constructive communication and continuous improvement.
+   After each coaching session, coaches have the option to provide valuable feedback and rating on their students. This feature promotes constructive communication and continuous improvement.
 
 #### For Student
-1. Booking System:
-   - Students have the convenience of booking coaching sessions directly through the app. This streamlined process simplifies scheduling and ensures a hassle-free experience for students seeking guidance.
+1. Booking System
+   Students have the convenience of booking coaching sessions directly through the app. This streamlined process simplifies scheduling and ensures a hassle-free experience for students seeking guidance.
 
 #### Both 
-1. Booking Overview: 
-   - Coaches and students can easily view their upcoming, done, and cancelled bookings, providing a comprehensive overview of their coaching sessions.
+1. Booking Overview
+   Coaches and students can easily view their upcoming, done, and cancelled bookings, providing a comprehensive overview of their coaching sessions.
 
   
   
@@ -73,12 +70,13 @@ $ npm run start
 - Ability to mark as done for upcoming bookings (Coach) 
 `This is for testing purposes only. The main logic of the app is, it will consider a booking done once endTime > current Datetime`
 - Ability to cancel upcoming bookings
-
 - Cancelled bookings filter
-## Limitations
+- 
+### Limitations
 - Authentication form `/login` and `/signup` dont't have front and backend validation
 - Fully booked dates are not disabled on the calendar. It will only shows "fully booked" message
-- No pagination 
+- No pagination
+- 
 ## How to use the app
 
 Once `npm run start` is done you can access it through http://localhost:3000/. You can create and login a user so navigate thoroughly if you want to try the basic authentication. 
@@ -87,12 +85,12 @@ Once `npm run start` is done you can access it through http://localhost:3000/. Y
 
 #### For Testing: 
 
-You can access http://localhost:3000/testing for switching up the users. If you want to see the other users credentials you can look for `/app/testing/` in the directory.
+You can access http://localhost:3000/testing for switching up the users. If you want to see the other users credentials you can look for `app/testing/` in the directory.
 
 ## File Structure / Routing
 
 ```bash
-/app - App directory
+app - App directory
     /(auth) - Layout for /login and /signup
     /(home) - Home page
     /(user) - Authenticated users
