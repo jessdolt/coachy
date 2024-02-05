@@ -21,13 +21,15 @@ Coachy is a user-friendly 1-on-1 coaching scheduler app designed to streamline a
 
 ## Getting started
 
-.env already included in repository
+
 
 Clone the project
 
 ```bash
 $ git clone https://github.com/jessdolt/coachy.git
 ```
+
+Add .env to the root directory 
 
 Install dependencies
 
