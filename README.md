@@ -47,7 +47,7 @@ $ npm run start
 
 
 
-## Main Features and limitations
+## Main Features and Limitations
 
 
 #### For Coaches
