@@ -32,7 +32,8 @@ const getCancelledBookings = async (): Promise<Meeting[] | []> => {
 
     const q = query(
       collection(db, COLLECTION_MEETING),
-      where("status", "==", STATUS.CANCELLED)
+      where("status", "==", STATUS.CANCELLED),
+      where(field, "==", currentUser.id)
     )
 
     const querySnapshot = await getDocs(q)

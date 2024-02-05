@@ -1,5 +1,5 @@
 import { ROLES } from "@/types"
-import { Book, BookCopy, CalendarCheck } from "lucide-react"
+import { Book, BookCopy, Calendar, CalendarCheck } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { usePathname } from "next/navigation"
 import { useMemo } from "react"
@@ -9,6 +9,13 @@ const useRoutes = () => {
   const { data } = useSession()
 
   const routes = [
+    {
+      name: "Bookings",
+      path: "/bookings/upcoming",
+      icon: Calendar,
+      isActive: pathname.startsWith("/bookings"),
+      ROLES: [ROLES.COACH, ROLES.STUDENT],
+    },
     {
       name: "Availability",
       path: "/availability",
@@ -22,13 +29,6 @@ const useRoutes = () => {
       icon: Book,
       isActive: pathname === "/book",
       ROLES: [ROLES.STUDENT],
-    },
-    {
-      name: "Bookings",
-      path: "/bookings/upcoming",
-      icon: BookCopy,
-      isActive: pathname.startsWith("/bookings"),
-      ROLES: [ROLES.COACH, ROLES.STUDENT],
     },
   ].filter((route) => route.ROLES.find((role) => role === data?.user?.role))
 

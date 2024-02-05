@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { useForm, FieldValues, SubmitHandler } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { CldUploadButton } from "next-cloudinary"
@@ -12,7 +12,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { COLLECTION_USERS } from "@/lib/collections"
 import {
@@ -22,7 +21,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form"
 
 interface SetupFormProps {
@@ -81,7 +79,7 @@ const SetupForm: React.FC<SetupFormProps> = ({ currentUser }) => {
         phoneNumber: data.phoneNumber,
       })
 
-      // router.push("/book")
+      router.push("/bookings/upcoming")
     } catch (error) {
       toast.error("Something went wrong")
     } finally {

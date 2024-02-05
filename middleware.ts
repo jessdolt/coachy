@@ -7,21 +7,21 @@ export default withAuth(
     const user = request.nextauth.token as any
     const url = request.nextUrl.clone()
 
-    if (
-      request.nextUrl.pathname.startsWith("/book") &&
-      user.role !== ROLES.STUDENT
-    ) {
-      url.pathname = "/availability"
-      return NextResponse.redirect(url)
-    }
+    // if (
+    //   request.nextUrl.pathname.startsWith("/book") &&
+    //   user.role !== ROLES.STUDENT
+    // ) {
+    //   url.pathname = "/availability"
+    //   return NextResponse.redirect(url)
+    // }
 
-    if (
-      request.nextUrl.pathname.startsWith("/availability") &&
-      user.role !== ROLES.COACH
-    ) {
-      url.pathname = "/book"
-      return NextResponse.redirect(url)
-    }
+    // if (
+    //   request.nextUrl.pathname.startsWith("/availability") &&
+    //   user.role !== ROLES.COACH
+    // ) {
+    //   url.pathname = "/book"
+    //   return NextResponse.redirect(url)
+    // }
   },
   {
     callbacks: {

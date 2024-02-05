@@ -21,7 +21,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (status === "authenticated") {
-      router.push("/book")
+      router.push("/bookings/upcoming")
     }
   }, [status, router])
 

@@ -9,9 +9,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Check, CheckCircle2 } from "lucide-react"
+import { Check } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useRef, useState } from "react"
+import { useRef } from "react"
 import toast from "react-hot-toast"
 import { doc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
@@ -43,7 +43,6 @@ const MarkAsDoneButton: React.FC<MarkAsDoneButtonProps> = ({ meeting_id }) => {
       buttonElement.current?.click()
       buttonFeedbackElement.current?.click()
       toast.success("Meeting marked as done")
-      router.refresh()
     } catch (error) {
       toast.error("Error cancelling meeting")
     }

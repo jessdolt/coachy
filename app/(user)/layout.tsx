@@ -14,14 +14,16 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = async ({
 
   if (!currentUser) return null
 
-  if (
-    !currentUser.profileUrl ||
-    !currentUser.firstName ||
-    !currentUser.lastName ||
-    !currentUser.phoneNumber
-  ) {
-    redirect("/setup")
-  }
+  console.log(currentUser)
+
+  // if (
+  //   !currentUser.profileUrl ||
+  //   !currentUser.firstName ||
+  //   !currentUser.lastName ||
+  //   !currentUser.phoneNumber
+  // ) {
+  //   redirect("/setup")
+  // }
 
   return <Sidebar>{children}</Sidebar>
 }

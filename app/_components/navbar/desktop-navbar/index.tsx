@@ -23,7 +23,7 @@ const DesktopNavbar = () => {
             </Link>
           </>
         ) : (
-          <Link href="/book">
+          <Link href="/bookings/upcoming">
             <Button>Account</Button>
           </Link>
         )}

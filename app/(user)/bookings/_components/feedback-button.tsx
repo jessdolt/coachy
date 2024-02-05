@@ -53,6 +53,11 @@ const FeedbackButton: React.ForwardRefRenderFunction<
     }
   }
 
+  // Refresh the current route when the dialog is closed to update the UI
+  const refOnClick = () => {
+    router.refresh()
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -95,7 +100,11 @@ const FeedbackButton: React.ForwardRefRenderFunction<
         </div>
         <DialogFooter>
           <DialogClose>
-            <Button variant="secondary" ref={buttonElement}>
+            <Button
+              variant="secondary"
+              ref={buttonElement}
+              onClick={() => ref && refOnClick()}
+            >
               Later
             </Button>
           </DialogClose>

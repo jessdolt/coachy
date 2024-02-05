@@ -18,7 +18,7 @@ const MobileNavbar = () => {
           <Button>Start now</Button>
         </Link>
       ) : (
-        <Link href="/book">
+        <Link href="/bookings/upcoming">
           <Button>Account</Button>
         </Link>
       )}
