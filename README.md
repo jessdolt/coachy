@@ -1,37 +1,98 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Coachy : Coaching scheduler app
 
 
-First, run the development server:
+Coachy is a user-friendly 1-on-1 coaching scheduler app designed to streamline and enhance the coaching experience. With Coachy, both coaches and clients can easily manage their schedules, book sessions, and stay organized. The intuitive interface allows coaches to set their availability, while students can effortlessly browse and book sessions at their convenience.
+
+
+### Requirements
+- Node.js [18.17](https://nodejs.org/en) or later
+
+### Built with
+
+- [Next.js version 14](https://nextjs.org/)
+- [NextAuth](https://next-auth.js.org/)
+- [Firebase Firestore](https://firebase.google.com/docs/firestore)
+- [tailwindcss](https://tailwindcss.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+
+
+
+
+## Getting started
+
+Clone the project
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+$ git clone https://github.com/jessdolt/coachy.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Install dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+$ npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Build Application
+```bash
+$ npm run build
+```
 
-## Learn More
+Start the server
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+$ npm run start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Main Features and limitations
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+#### For Coaches
+1. Availability Management
+  - Coaches can effortlessly set their 2-hour availability slots using an intuitive day setter. This feature allows them to customize their schedule for each day of the week, providing flexibility and control.
+2. Feedback System
+  - After each coaching session, coaches have the option to provide valuable feedback and rating on their students. This feature promotes constructive communication and continuous improvement.
+
+#### For Student
+1. Booking System:
+   - Students have the convenience of booking coaching sessions directly through the app. This streamlined process simplifies scheduling and ensures a hassle-free experience for students seeking guidance.
+
+#### Both 
+1. Booking Overview: 
+   - Coaches and students can easily view their upcoming, done, and cancelled bookings, providing a comprehensive overview of their coaching sessions.
+
+  
+  
+### Added features
+- Normal authentication using NextAuth 
+- Ability to mark as done for upcoming bookings (Coach) 
+`This is for testing purposes only. The main logic of the app is, it will consider a booking done once endTime > current Datetime`
+- Ability to cancel upcoming bookings
+
+- Cancelled bookings filter
+## Limitations
+- Authentication form `/login` and `/signup` dont't have front and backend validation
+- Fully booked dates are not disabled on the calendar. It will only shows "fully booked" message
+- No pagination 
+## How to use the app
+
+Once `npm run start` is done you can access it through http://localhost:3000/. You can create and login a user so navigate thoroughly if you want to try the basic authentication. 
+
+#### Important Note  (Please read)
+
+#### For Testing: 
+
+You can access http://localhost:3000/testing for switching up the users. If you want to see the other users credentials you can look for `/app/testing/` in the directory.
+
+## File Structure / Routing
+
+```bash
+/app - App directory
+    /(auth) - Layout for /login and /signup
+    /(home) - Home page
+    /(user) - Authenticated users
+    /testing - Buttons for switching up users
+```
