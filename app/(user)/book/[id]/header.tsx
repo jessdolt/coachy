@@ -7,9 +7,10 @@ import { Users } from "lucide-react"
 
 interface HeaderProps {
   coach: User
+  coached_students: number
 }
 
-const Header: React.FC<HeaderProps> = ({ coach }) => {
+const Header: React.FC<HeaderProps> = ({ coach, coached_students }) => {
   return (
     <div>
       <div>
@@ -23,7 +24,8 @@ const Header: React.FC<HeaderProps> = ({ coach }) => {
         <div className="space-y-2">
           <h1 className="text-xl lg:text-3xl font-bold">{coach.fullName}</h1>
           <div className="text-sm lg:text-base flex gap-2 items-center">
-            Coached students: 13 <Users className="w-4 h-4" />
+            Coached student{coached_students > 1 ? "s" : ""}: {coached_students}{" "}
+            <Users className="w-4 h-4" />
           </div>
         </div>
       </div>

@@ -16,6 +16,7 @@ import { TimeSlot } from "@/types"
 import { addDoc, collection } from "firebase/firestore"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import toast from "react-hot-toast"
 
 interface ConfirmBookingProps {
@@ -31,8 +32,10 @@ const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
 }) => {
   const router = useRouter()
   const { data } = useSession()
+  const [isLoading, setIsLoading] = useState(false)
 
   const submitBooking = async () => {
+    setIsLoading(true)
     try {
       await addDoc(collection(db, COLLECTION_MEETING), {
         coach_id: coach_id,
@@ -48,6 +51,8 @@ const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
       router.push("/bookings/upcoming")
     } catch (e) {
       toast.error("Something went wrong")
+    } finally {
+      setIsLoading
     }
   }
 
@@ -74,7 +79,9 @@ const ConfirmBooking: React.FC<ConfirmBookingProps> = ({
               Close
             </Button>
           </DialogClose>
-          <Button onClick={() => submitBooking()}>Yes</Button>
+          <Button onClick={() => submitBooking()} disabled={isLoading}>
+            Yes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

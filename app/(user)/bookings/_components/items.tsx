@@ -37,8 +37,8 @@ const Items: React.FC<ItemsProps> = ({
                 {meeting.startTime} - {meeting.endTime}
               </p>
             </div>
-            <div className="w-full flex-1 flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center gap-4">
-              <div className="flex gap-4 items-center">
+            <div className="w-full flex-1 flex flex-col sm:flex-row justify-start items-start sm:items-center gap-4">
+              <div className="flex gap-4 items-center flex-1 max-w-[500px]">
                 <Avatar>
                   <AvatarImage
                     src={meeting?.otherUser?.profileUrl}
@@ -49,7 +49,7 @@ const Items: React.FC<ItemsProps> = ({
                   {meeting?.otherUser?.fullName}
                 </h2>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 flex-1">
                 <div className="flex text-sm items-center gap-2">
                   <Phone className="w-4 h-4 " />
                   <p>{meeting?.otherUser?.phoneNumber}</p>
