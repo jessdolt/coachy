@@ -73,7 +73,7 @@ $ npm run start
 - Normal authentication using NextAuth 
 - Ability to mark as done for upcoming bookings (Coach)
   
-`This is for testing purposes only. The main logic of the app is, it will consider a booking done once endTime > current Datetime`
+`This is for testing purposes only. The main logic of the app is, it will consider a booking done once current Datetime  > endTime`
 - Ability to cancel upcoming bookings
 - Cancelled bookings filter
   
@@ -81,7 +81,7 @@ $ npm run start
 - Authentication form `/login` and `/signup` dont't have front and backend validation
 - Fully booked dates are not disabled on the calendar. It will only shows "fully booked" message
 - No pagination
-- 
+  
 ## How to use the app
 
 Once `npm run start` is done you can access it through http://localhost:3000/. You can create and login a user so navigate thoroughly if you want to try the basic authentication. 
