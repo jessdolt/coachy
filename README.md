@@ -84,6 +84,7 @@ $ npm run start
 - Authentication form `/login` and `/signup` dont't have front and backend validation
 - Fully booked dates are not disabled on the calendar. It will only shows "fully booked" message
 - No pagination
+- Setting up time slots in `/availability` page only handles basic error handling (checks overlapping time slot only)
   
 ## How to use the app
 
